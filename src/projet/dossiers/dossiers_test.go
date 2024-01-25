@@ -5,22 +5,24 @@ import (
 	"testing"
 )
 
+const path = "C:\\GoEstiamProjet\\src\\test\\"
+
 func TestCreateFolder(t *testing.T) {
 	name := "TestCreateFolder"
-	path := "C:\\GoEstiamProjet\\src\\data\\" + name
+	finalPath := path + name
 
-	err := CreateFolder(name)
+	err := CreateFolder(name, path)
 	if err != nil {
 		t.Error("Erreur :", err)
 	}
 
-	os.RemoveAll(path)
+	os.RemoveAll(finalPath)
 }
 
 func TestCreateFolderChar(t *testing.T) {
 	name := "TestCreateFolder|*"
 
-	err := CreateFolder(name)
+	err := CreateFolder(name, path)
 	if err != nil {
 		t.Error("Erreur :", err)
 	}
@@ -29,24 +31,24 @@ func TestCreateFolderChar(t *testing.T) {
 func TestReadFolder(t *testing.T) {
 	name1 := "TestReadFolder"
 	name2 := "TestReadFolder\\Alire"
-	path1 := "C:\\GoEstiamProjet\\src\\data\\" + name1
-	path2 := "C:\\GoEstiamProjet\\src\\data\\" + name2
+	finalPath1 := path + name1
+	finalPath2 := path + name2
 
-	os.Mkdir(path1, 0755)
-	os.Mkdir(path2, 0755)
+	os.Mkdir(finalPath1, 0755)
+	os.Mkdir(finalPath2, 0755)
 
-	err := ReadFolder(name1)
+	err := ReadFolder(name1, path)
 	if err != nil {
 		t.Error("Erreur :", err)
 	}
 
-	os.RemoveAll(path1)
+	os.RemoveAll(finalPath1)
 }
 
 func TestReadFolderNotExist(t *testing.T) {
 	name := "TestReadFolderNotExist"
 
-	err := ReadFolder(name)
+	err := ReadFolder(name, path)
 	if err != nil {
 		t.Error("Erreur :", err)
 	}
@@ -55,53 +57,53 @@ func TestReadFolderNotExist(t *testing.T) {
 func TestUpdateFolder(t *testing.T) {
 	name1 := "TestUpdateFolder1"
 	name2 := "TestUpdateFolder2"
-	path1 := "C:\\GoEstiamProjet\\src\\data\\" + name1
-	path2 := "C:\\GoEstiamProjet\\src\\data\\" + name2
+	finalPath1 := path + name1
+	finalPath2 := path + name2
 
-	os.Mkdir(path1, 0755)
+	os.Mkdir(finalPath1, 0755)
 
-	err := UpdateFolder(name1, name2)
+	err := RenameFolder(name1, name2, path)
 	if err != nil {
 		t.Error("Erreur :", err)
 	}
 
-	os.RemoveAll(path2)
+	os.RemoveAll(finalPath2)
 }
 
 func TestUpdateFolderChar(t *testing.T) {
 	name1 := "TestUpdateFolderAccent"
 	name2 := "TestUpdateFolderAccent\\\""
-	path := "C:\\GoEstiamProjet\\src\\data\\" + name1
+	finalPath := path + name1
 
-	os.Mkdir(path, 0755)
+	os.Mkdir(finalPath, 0755)
 
-	err := UpdateFolder(name1, name2)
+	err := RenameFolder(name1, name2, path)
 	if err != nil {
 		t.Error("Erreur :", err)
 	}
 
-	os.RemoveAll(path)
+	os.RemoveAll(finalPath)
 }
 
 func TestDelete(t *testing.T) {
 	name := "TestDelete"
 
-	path := "C:\\GoEstiamProjet\\src\\data\\" + name
+	finalPath := path + name
 
-	os.Mkdir(path, 0755)
+	os.Mkdir(finalPath, 0755)
 
-	err := DeleteFolder(name)
+	err := DeleteFolder(name, path)
 	if err != nil {
 		t.Error("Erreur :", err)
 	}
 
-	os.RemoveAll(path)
+	os.RemoveAll(finalPath)
 }
 
 func TestDeleteNotExist(t *testing.T) {
 	name := "TestDeleteNotExist"
 
-	err := DeleteFolder(name)
+	err := DeleteFolder(name, path)
 	if err != nil {
 		t.Error("Erreur :", err)
 	}

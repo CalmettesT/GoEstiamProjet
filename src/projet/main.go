@@ -7,6 +7,8 @@ import (
 	"projet/fichiers"
 )
 
+const path = "C:\\GoEstiamProjet\\src\\data\\"
+
 func main() {
 	// Dossier
 	if len(os.Args) > 1 {
@@ -21,36 +23,48 @@ func main() {
 					// Vérifie si le nombre d'argument est supérieur à 3
 					if len(os.Args) > 3 {
 						// Créer un dossier
-						dossiers.CreateFolder(os.Args[3])
+						err := dossiers.CreateFolder(os.Args[3], path)
+						if err != nil {
+							fmt.Println("Erreur :", err)
+						}
 					} else {
-						fmt.Println("Le chemin est vide.")
+						fmt.Println("Le chemin que vous avez saisi est vide.")
 					}
 
 				case "read":
 					// Vérifie si le nombre d'argument est supérieur à 3
 					if len(os.Args) > 3 {
 						// Lire le dossier
-						dossiers.ReadFolder(os.Args[3])
+						err := dossiers.ReadFolder(os.Args[3], path)
+						if err != nil {
+							fmt.Println("Erreur :", err)
+						}
 					} else {
-						fmt.Println("Le chemin est vide.")
+						fmt.Println("Le chemin que vous avez saisi est vide.")
 					}
 
-				case "update":
+				case "rename":
 					// Vérifie si le nombre d'argument est supérieur à 4
 					if len(os.Args) > 4 {
 						// Met à jour le nom du dossier
-						dossiers.UpdateFolder(os.Args[3], os.Args[4])
+						err := dossiers.RenameFolder(os.Args[3], os.Args[4], path)
+						if err != nil {
+							fmt.Println("Erreur :", err)
+						}
 					} else {
-						fmt.Println("Le chemin est vide.")
+						fmt.Println("Le chemin que vous avez saisi est vide.")
 					}
 
 				case "delete":
 					// Vérifie si le nombre d'argument est supérieur à 3
 					if len(os.Args) > 3 {
 						// Delete un dossier
-						dossiers.DeleteFolder(os.Args[3])
+						err := dossiers.DeleteFolder(os.Args[3], path)
+						if err != nil {
+							fmt.Println("Erreur :", err)
+						}
 					} else {
-						fmt.Println("Le chemin est vide.")
+						fmt.Println("Le chemin que vous avez saisi est vide.")
 					}
 
 				default:
@@ -69,7 +83,7 @@ func main() {
 					// Vérifie si le nombre d'argument est supérieur à 3
 					if len(os.Args) > 4 {
 						// Créer un fichier
-						fichiers.CreateFile(os.Args[3], os.Args[4])
+						fichiers.CreateFile(os.Args[3], path)
 					} else {
 						fmt.Println("Le chemin est vide.")
 					}
@@ -120,7 +134,42 @@ func main() {
 
 		case "-help":
 			// Liste de toutes les commandes disponibles
-			fmt.Println("C'est en cours")
+			if len(os.Args) > 2 {
+				switch os.Args[2] {
+				case "dir":
+					// Commande dir
+					command := []string{"create", "read", "rename", "delete"}
+					if len(command) > 0 {
+						fmt.Println("Voici les sous-commandes disponibles pour la commande dir:")
+						for _, entry := range command {
+							fmt.Println("-", entry)
+						}
+					}
+
+				case "file":
+					// Commande file
+					command := []string{""}
+					if len(command) > 0 {
+						fmt.Println("Voici les sous-commandes disponibles pour la commande file:")
+						for _, entry := range command {
+							fmt.Println("-", entry)
+						}
+					}
+
+				default:
+					fmt.Println("Aucune commande ne correspond à votre saisie.")
+
+				}
+			} else if len(os.Args) == 2 {
+				// Commande de base
+				command := []string{"dir", "file"}
+				if len(command) > 0 {
+					for _, entry := range command {
+						fmt.Println(entry)
+					}
+				}
+			}
+
 		default:
 			fmt.Println("Aucune commande ne correspond à votre saisie.")
 		}
