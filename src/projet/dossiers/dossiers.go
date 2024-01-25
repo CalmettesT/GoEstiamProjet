@@ -6,35 +6,40 @@ import (
 	"os"
 )
 
+<<<<<<< Updated upstream
 func CreateFolder(name string) {
+=======
+func CreateFolder(name string) error {
+>>>>>>> Stashed changes
 	path := "C:\\GoEstiamProjet\\src\\data\\" + name
 
-	if _, error := os.Stat(path); errors.Is(error, os.ErrNotExist) {
-		error := os.Mkdir(path, 0755)
+	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
+		err := os.Mkdir(path, 0755)
 
-		if error != nil {
-			fmt.Println("Une erreur est apparue.")
-			return
-		} else {
-			fmt.Println("Le dossier a bien été créé.")
+		if err != nil {
+			return fmt.Errorf("le dossier ne s'est pas créé: %v", err)
 		}
-	} else {
-		fmt.Println("Le dossier existe déjà.")
-	}
 
+		return nil
+	} else {
+		return errors.New("le dossier existe déjà")
+	}
 }
 
+<<<<<<< Updated upstream
 func ReadFolder(name string) {
+=======
+func ReadFolder(name string) error {
+>>>>>>> Stashed changes
 	path := "C:\\GoEstiamProjet\\src\\data\\" + name
 
-	if _, error := os.Stat(path); errors.Is(error, os.ErrNotExist) {
-		fmt.Println("Le dossier n'existe pas.")
+	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
+		return errors.New("le dossier n'existe pas")
 	} else {
-		valeurs, error := os.ReadDir(path)
+		valeurs, err := os.ReadDir(path)
 
-		if error != nil {
-			fmt.Println(error)
-			return
+		if err != nil {
+			return errors.New("la lecture du dossier n'a pas fonctionnée")
 		}
 
 		if len(valeurs) > 1 {
@@ -44,6 +49,8 @@ func ReadFolder(name string) {
 		} else {
 			fmt.Println("Le dossier ne contient aucune donnée.")
 		}
+
+		return nil
 	}
 }
 
