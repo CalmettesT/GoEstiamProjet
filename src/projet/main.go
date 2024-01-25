@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"projet/dossiers"
 	"projet/fichiers"
 )
 
@@ -19,7 +20,7 @@ func main() {
 					// Vérifie si le nombre d'argument est supérieur à 3
 					if len(os.Args) > 3 {
 						// Créer un dossier
-						fichiers.CreateFile(os.Args[3])
+						dossiers.CreateFolder(os.Args[3])
 					} else {
 						fmt.Println("Le chemin est vide.")
 					}
@@ -27,7 +28,7 @@ func main() {
 					// Vérifie si le nombre d'argument est supérieur à 3
 					if len(os.Args) > 3 {
 						// Lire le dossier
-						readFolder(os.Args[3])
+						dossiers.ReadFolder(os.Args[3])
 					} else {
 						fmt.Println("Le chemin est vide.")
 					}
@@ -35,7 +36,7 @@ func main() {
 					// Vérifie si le nombre d'argument est supérieur à 4
 					if len(os.Args) > 4 {
 						// Met à jour le nom du dossier
-						updateFolder(os.Args[3], os.Args[4])
+						dossiers.UpdateFolder(os.Args[3], os.Args[4])
 					} else {
 						fmt.Println("Le chemin est vide.")
 					}
@@ -43,7 +44,7 @@ func main() {
 					// Vérifie si le nombre d'argument est supérieur à 3
 					if len(os.Args) > 3 {
 						// Delete un dossier
-						deleteFolder(os.Args[3])
+						dossiers.DeleteFolder(os.Args[3])
 					} else {
 						fmt.Println("Le chemin est vide.")
 					}
@@ -65,7 +66,7 @@ func main() {
 					// Vérifie si le nombre d'argument est supérieur à 3
 					if len(os.Args) > 3 {
 						// Créer un fichier
-						createFile(os.Args[3])
+						fichiers.CreateFile(os.Args[3])
 					} else {
 						fmt.Println("Le chemin est vide.")
 					}
@@ -73,7 +74,7 @@ func main() {
 					// Vérifie si le nombre d'argument est supérieur à 3
 					if len(os.Args) > 3 {
 						// Lire le fichier
-						readFile(os.Args[3])
+						fichiers.ReadFile(os.Args[3])
 					} else {
 						fmt.Println("Le chemin est vide.")
 					}
@@ -81,7 +82,7 @@ func main() {
 					// Vérifie si le nombre d'argument est supérieur à 4
 					if len(os.Args) > 4 {
 						// Met à jour le nom du dossier
-						updateNameFile(os.Args[3], os.Args[4])
+						fichiers.UpdateNameFile(os.Args[3], os.Args[4])
 					} else {
 						fmt.Println("Le chemin est vide.")
 					}
@@ -89,7 +90,7 @@ func main() {
 					// Vérifie si le nombre d'argument est supérieur à 4
 					if len(os.Args) > 4 {
 						// Met à jour le nom du dossier
-						updateTextFile(os.Args[3], os.Args[4])
+						fichiers.UpdateTextFile(os.Args[3], os.Args[4])
 					} else {
 						fmt.Println("Le chemin est vide.")
 					}
@@ -97,7 +98,7 @@ func main() {
 					// Vérifie si le nombre d'argument est supérieur à 3
 					if len(os.Args) > 3 {
 						// Delete un dossier
-						deleteFile(os.Args[3])
+						fichiers.DeleteFile(os.Args[3])
 					} else {
 						fmt.Println("Le chemin est vide.")
 					}

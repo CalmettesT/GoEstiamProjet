@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func createFolder(name string) {
+func CreateFolder(name string) {
 	path := "C:\\GoEstiamProjet\\src\\data\\" + name
 
 	if _, error := os.Stat(path); errors.Is(error, os.ErrNotExist) {
@@ -24,7 +24,7 @@ func createFolder(name string) {
 
 }
 
-func readFolder(name string) {
+func ReadFolder(name string) {
 	path := "C:\\GoEstiamProjet\\src\\data\\" + name
 
 	if _, error := os.Stat(path); errors.Is(error, os.ErrNotExist) {
@@ -47,7 +47,7 @@ func readFolder(name string) {
 	}
 }
 
-func updateFolder(oldName string, newName string) {
+func UpdateFolder(oldName string, newName string) {
 	oldPath := "C:\\GoEstiamProjet\\src\\data\\" + oldName
 	newPath := "C:\\GoEstiamProjet\\src\\data\\" + newName
 
@@ -62,7 +62,7 @@ func updateFolder(oldName string, newName string) {
 	}
 }
 
-func deleteFolder(name string) {
+func DeleteFolder(name string) {
 	path := "C:\\GoEstiamProjet\\src\\data\\" + name
 
 	if _, error := os.Stat(path); errors.Is(error, os.ErrNotExist) {

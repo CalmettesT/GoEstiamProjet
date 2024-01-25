@@ -20,7 +20,7 @@ func CreateFile(name string) {
 	}
 }
 
-func readFile(name string) {
+func ReadFile(name string) {
 	filePath := "C:\\GoEstiamProjet\\src\\data\\" + name
 	data, err := os.ReadFile(filePath)
 	if err != nil {
@@ -30,7 +30,7 @@ func readFile(name string) {
 	fmt.Println("Contenu du fichier:", string(data))
 }
 
-func updateTextFile(name string, data string) {
+func UpdateTextFile(name string, data string) {
 	filePath := "C:\\GoEstiamProjet\\src\\data\\" + name
 	err := os.WriteFile(filePath, []byte(data), 0644)
 	if err != nil {
@@ -40,7 +40,7 @@ func updateTextFile(name string, data string) {
 	fmt.Println("Fichier mis à jour.")
 }
 
-func updateNameFile(oldName string, newName string) {
+func UpdateNameFile(oldName string, newName string) {
 	oldPath := "C:\\GoEstiamProjet\\src\\data\\" + oldName
 	newPath := "C:\\GoEstiamProjet\\src\\data\\" + newName
 	err := os.Rename(oldPath, newPath)
@@ -51,7 +51,7 @@ func updateNameFile(oldName string, newName string) {
 	fmt.Println("Nom fichier mis à jour.")
 }
 
-func deleteFile(name string) {
+func DeleteFile(name string) {
 	filePath := "C:\\GoEstiamProjet\\src\\data\\" + name
 	err := os.Remove(filePath)
 	if err != nil {
