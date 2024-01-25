@@ -17,22 +17,13 @@ func TestCreateFolder(t *testing.T) {
 	os.RemoveAll(path)
 }
 
-func TestCreateFolderAccent(t *testing.T) {
-	name := "TestCreateFolderAccentééééééè"
-	path := "C:\\GoEstiamProjet\\src\\data\\" + name
+func TestCreateFolderChar(t *testing.T) {
+	name := "TestCreateFolder|*"
 
 	err := CreateFolder(name)
 	if err != nil {
 		t.Error("Erreur :", err)
 	}
-
-	if _, err := os.Stat(path); err == nil {
-		t.Error("Le dossier a été créé avec des accents")
-	}
-
-	name = RemoveAccents(name)
-	pathVerif := "C:\\GoEstiamProjet\\src\\data\\" + name
-	os.RemoveAll(pathVerif)
 }
 
 func TestReadFolder(t *testing.T) {
@@ -77,24 +68,19 @@ func TestUpdateFolder(t *testing.T) {
 	os.RemoveAll(path2)
 }
 
-func TestUpdateFolderAccent(t *testing.T) {
+func TestUpdateFolderChar(t *testing.T) {
 	name1 := "TestUpdateFolderAccent"
-	name2 := "JeSuisàllémàngérù2"
-	path1 := "C:\\GoEstiamProjet\\src\\data\\" + name1
-	path2 := "C:\\GoEstiamProjet\\src\\data\\" + name2
+	name2 := "TestUpdateFolderAccent\\\""
+	path := "C:\\GoEstiamProjet\\src\\data\\" + name1
 
-	os.Mkdir(path1, 0755)
+	os.Mkdir(path, 0755)
 
 	err2 := UpdateFolder(name1, name2)
 	if err2 != nil {
 		t.Error("Erreur :", err2)
 	}
 
-	if _, err3 := os.Stat(path2); err3 == nil {
-		t.Error("Le dossier a été renommé avec des accents")
-	}
-
-	os.RemoveAll(path2)
+	os.RemoveAll(path)
 }
 
 func TestDelete(t *testing.T) {

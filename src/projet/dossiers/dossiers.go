@@ -5,50 +5,38 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"unicode"
-
-	"golang.org/x/text/transform"
-	"golang.org/x/text/unicode/norm"
 )
 
-func RemoveAccents(s string) string {
-	// Transformer la chaîne en Forme de Décomposition Canonique (NFD)
-	t := transform.Chain(norm.NFD)
-	s, _, _ = transform.String(t, s)
+func containsNoSpecificChars(s string) bool {
+	// Retourne `false` si `s` contient au moins un des caractères dans `chars`
+	chars := "\\/:*?\"<>|"
 
-	// Filtrer les caractères non-espacés (supprimer les accents)
-	s = strings.Map(func(r rune) rune {
-		if unicode.Is(unicode.Mn, r) { // Mn: marque non-espacée (accents, etc.)
-			return -1
-		}
-		return r
-	}, s)
-
-	return s
+	return !strings.ContainsAny(s, chars)
 }
 
 func CreateFolder(name string) error {
-	name = RemoveAccents(name)
+	if containsNoSpecificChars(name) {
+		path := "C:\\GoEstiamProjet\\src\\data\\" + name
 
-	path := "C:\\GoEstiamProjet\\src\\data\\" + name
+		// Si dossier existe
+		if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
+			err := os.Mkdir(path, 0755)
 
-	// Si dossier existe
-	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
-		err := os.Mkdir(path, 0755)
+			if err != nil {
+				return errors.New("le dossier ne s'est pas créé")
+			}
 
-		if err != nil {
-			return errors.New("le dossier ne s'est pas créé")
+			return nil
+		} else {
+			return errors.New("le dossier existe déjà")
 		}
-
-		return nil
 	} else {
-		return errors.New("le dossier existe déjà")
+		return errors.New("la chaîne contient au moins un caractère bloquant")
 	}
+
 }
 
 func ReadFolder(name string) error {
-	name = RemoveAccents(name)
-
 	path := "C:\\GoEstiamProjet\\src\\data\\" + name
 
 	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
@@ -73,26 +61,27 @@ func ReadFolder(name string) error {
 }
 
 func UpdateFolder(oldName string, newName string) error {
-	oldName = RemoveAccents(oldName)
-	newName = RemoveAccents(newName)
 
-	oldPath := "C:\\GoEstiamProjet\\src\\data\\" + oldName
-	newPath := "C:\\GoEstiamProjet\\src\\data\\" + newName
+	if containsNoSpecificChars(newName) {
+		oldPath := "C:\\GoEstiamProjet\\src\\data\\" + oldName
+		newPath := "C:\\GoEstiamProjet\\src\\data\\" + newName
 
-	if _, err := os.Stat(oldPath); errors.Is(err, os.ErrNotExist) {
-		return errors.New("le dossier n'existe pas")
-	} else {
+		if _, err := os.Stat(oldPath); errors.Is(err, os.ErrNotExist) {
+			return errors.New("le dossier n'existe pas")
+		} else {
 
-		err := os.Rename(oldPath, newPath)
-		if err != nil {
-			return errors.New("la mise à jour du dossier n'a pas fonctionnée")
+			err := os.Rename(oldPath, newPath)
+			if err != nil {
+				return errors.New("la mise à jour du dossier n'a pas fonctionnée")
+			}
+			return nil
 		}
-		return nil
+	} else {
+		return errors.New("la chaîne contient au moins un caractère bloquant")
 	}
 }
 
 func DeleteFolder(name string) error {
-	name = RemoveAccents(name)
 
 	path := "C:\\GoEstiamProjet\\src\\data\\" + name
 
