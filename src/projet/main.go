@@ -28,7 +28,7 @@ func main() {
 							fmt.Println("Erreur :", err)
 						}
 					} else {
-						fmt.Println("Le chemin que vous avez saisi est vide.")
+						fmt.Println("Le nombre d'arguments fournis n'est pas valide.")
 					}
 
 				case "read":
@@ -40,7 +40,7 @@ func main() {
 							fmt.Println("Erreur :", err)
 						}
 					} else {
-						fmt.Println("Le chemin que vous avez saisi est vide.")
+						fmt.Println("Le nombre d'arguments fournis n'est pas valide.")
 					}
 
 				case "rename":
@@ -52,7 +52,7 @@ func main() {
 							fmt.Println("Erreur :", err)
 						}
 					} else {
-						fmt.Println("Le chemin que vous avez saisi est vide.")
+						fmt.Println("Le nombre d'arguments fournis n'est pas valide.")
 					}
 
 				case "delete":
@@ -64,7 +64,7 @@ func main() {
 							fmt.Println("Erreur :", err)
 						}
 					} else {
-						fmt.Println("Le chemin que vous avez saisi est vide.")
+						fmt.Println("Le nombre d'arguments fournis n'est pas valide.")
 					}
 
 				default:
@@ -83,43 +83,58 @@ func main() {
 					// Vérifie si le nombre d'argument est supérieur à 3
 					if len(os.Args) > 4 {
 						// Créer un fichier
-						fichiers.CreateFile(os.Args[3], path)
+						err := fichiers.CreateFile(os.Args[3], os.Args[4], path)
+						if err != nil {
+							fmt.Println("Erreur :", err)
+						}
 					} else {
-						fmt.Println("Le chemin est vide.")
+						fmt.Println("Le nombre d'arguments fournis n'est pas valide.")
 					}
 
 				case "read":
 					// Vérifie si le nombre d'argument est supérieur à 3
 					if len(os.Args) > 3 {
 						// Lire le fichier
-						fichiers.ReadFile(os.Args[3])
+						_, err := fichiers.ReadFile(os.Args[3], path)
+						if err != nil {
+							fmt.Println("Erreur :", err)
+						}
 					} else {
-						fmt.Println("Le chemin est vide.")
+						fmt.Println("Le nombre d'arguments fournis n'est pas valide.")
 					}
 
-				case "updatename":
+				case "rename":
 					// Vérifie si le nombre d'argument est supérieur à 4
 					if len(os.Args) > 4 {
 						// Met à jour le nom du dossier
-						fichiers.UpdateNameFile(os.Args[3], os.Args[4])
+						err := fichiers.UpdateNameFile(os.Args[3], os.Args[4], path)
+						if err != nil {
+							fmt.Println("Erreur :", err)
+						}
 					} else {
-						fmt.Println("Le chemin est vide.")
+						fmt.Println("Le nombre d'arguments fournis n'est pas valide.")
 					}
 
 				case "updatetext":
 					// Vérifie si le nombre d'argument est supérieur à 4
 					if len(os.Args) > 4 {
 						// Met à jour le nom du dossier
-						fichiers.UpdateTextFile(os.Args[3], os.Args[4])
+						err := fichiers.UpdateTextFile(os.Args[3], os.Args[4], path)
+						if err != nil {
+							fmt.Println("Erreur :", err)
+						}
 					} else {
-						fmt.Println("Le chemin est vide.")
+						fmt.Println("Le nombre d'arguments fournis n'est pas valide.")
 					}
 
 				case "delete":
 					// Vérifie si le nombre d'argument est supérieur à 3
 					if len(os.Args) > 3 {
 						// Delete un dossier
-						fichiers.DeleteFile(os.Args[3])
+						err := fichiers.DeleteFile(os.Args[3], path)
+						if err != nil {
+							fmt.Println("Erreur :", err)
+						}
 					} else {
 						fmt.Println("Le chemin est vide.")
 					}
@@ -148,7 +163,7 @@ func main() {
 
 				case "file":
 					// Commande file
-					command := []string{""}
+					command := []string{"create", "read", "rename", "updatetext", "delete"}
 					if len(command) > 0 {
 						fmt.Println("Voici les sous-commandes disponibles pour la commande file:")
 						for _, entry := range command {
