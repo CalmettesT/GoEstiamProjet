@@ -67,9 +67,9 @@ func main() {
 				switch os.Args[2] {
 				case "create":
 					// Vérifie si le nombre d'argument est supérieur à 3
-					if len(os.Args) > 3 {
+					if len(os.Args) > 4 {
 						// Créer un fichier
-						fichiers.CreateFile(os.Args[3])
+						fichiers.CreateFile(os.Args[3], os.Args[4])
 					} else {
 						fmt.Println("Le chemin est vide.")
 					}

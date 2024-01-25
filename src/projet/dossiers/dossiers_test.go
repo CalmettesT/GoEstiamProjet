@@ -75,9 +75,9 @@ func TestUpdateFolderChar(t *testing.T) {
 
 	os.Mkdir(path, 0755)
 
-	err2 := UpdateFolder(name1, name2)
-	if err2 != nil {
-		t.Error("Erreur :", err2)
+	err := UpdateFolder(name1, name2)
+	if err != nil {
+		t.Error("Erreur :", err)
 	}
 
 	os.RemoveAll(path)
@@ -90,9 +90,9 @@ func TestDelete(t *testing.T) {
 
 	os.Mkdir(path, 0755)
 
-	err2 := DeleteFolder(name)
-	if err2 != nil {
-		t.Error("Erreur :", err2)
+	err := DeleteFolder(name)
+	if err != nil {
+		t.Error("Erreur :", err)
 	}
 
 	os.RemoveAll(path)
