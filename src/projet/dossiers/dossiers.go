@@ -11,7 +11,7 @@ import (
 	"golang.org/x/text/unicode/norm"
 )
 
-func removeAccents(s string) string {
+func RemoveAccents(s string) string {
 	// Transformer la chaîne en Forme de Décomposition Canonique (NFD)
 	t := transform.Chain(norm.NFD)
 	s, _, _ = transform.String(t, s)
@@ -28,7 +28,7 @@ func removeAccents(s string) string {
 }
 
 func CreateFolder(name string) error {
-	name = removeAccents(name)
+	name = RemoveAccents(name)
 
 	path := "C:\\GoEstiamProjet\\src\\data\\" + name
 
@@ -47,7 +47,7 @@ func CreateFolder(name string) error {
 }
 
 func ReadFolder(name string) error {
-	name = removeAccents(name)
+	name = RemoveAccents(name)
 
 	path := "C:\\GoEstiamProjet\\src\\data\\" + name
 
@@ -73,8 +73,8 @@ func ReadFolder(name string) error {
 }
 
 func UpdateFolder(oldName string, newName string) error {
-	oldName = removeAccents(oldName)
-	newName = removeAccents(newName)
+	oldName = RemoveAccents(oldName)
+	newName = RemoveAccents(newName)
 
 	oldPath := "C:\\GoEstiamProjet\\src\\data\\" + oldName
 	newPath := "C:\\GoEstiamProjet\\src\\data\\" + newName
@@ -92,7 +92,7 @@ func UpdateFolder(oldName string, newName string) error {
 }
 
 func DeleteFolder(name string) error {
-	name = removeAccents(name)
+	name = RemoveAccents(name)
 
 	path := "C:\\GoEstiamProjet\\src\\data\\" + name
 
