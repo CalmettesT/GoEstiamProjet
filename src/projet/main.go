@@ -1,9 +1,9 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"os"
+	"projet/fichiers"
 )
 
 func main() {
@@ -19,7 +19,7 @@ func main() {
 					// Vérifie si le nombre d'argument est supérieur à 3
 					if len(os.Args) > 3 {
 						// Créer un dossier
-						createFolder(os.Args[3])
+						fichiers.CreateFile(os.Args[3])
 					} else {
 						fmt.Println("Le chemin est vide.")
 					}
@@ -111,132 +111,4 @@ func main() {
 	} else {
 		fmt.Println("Exécutez la commande \"-help\" si vous n'êtes pas familier avec les instructions disponibles.")
 	}
-}
-
-func createFolder(name string) {
-	path := "C:\\GoEstiamProjet\\src\\data\\" + name
-
-	if _, error := os.Stat(path); errors.Is(error, os.ErrNotExist) {
-		error := os.Mkdir(path, 0755)
-
-		if error != nil {
-			fmt.Println("Une erreur est apparue.")
-			return
-		} else {
-			fmt.Println("Le dossier a bien été créé.")
-		}
-	} else {
-		fmt.Println("Le dossier existe déjà.")
-	}
-
-}
-
-func readFolder(name string) {
-	path := "C:\\GoEstiamProjet\\src\\data\\" + name
-
-	if _, error := os.Stat(path); errors.Is(error, os.ErrNotExist) {
-		fmt.Println("Le dossier n'existe pas.")
-	} else {
-		valeurs, error := os.ReadDir(path)
-
-		if error != nil {
-			fmt.Println(error)
-			return
-		}
-
-		if len(valeurs) > 1 {
-			for _, entry := range valeurs {
-				fmt.Println(entry.Name())
-			}
-		} else {
-			fmt.Println("Le dossier ne contient aucune donnée.")
-		}
-	}
-}
-
-func updateFolder(oldName string, newName string) {
-	oldPath := "C:\\GoEstiamProjet\\src\\data\\" + oldName
-	newPath := "C:\\GoEstiamProjet\\src\\data\\" + newName
-
-	if _, error := os.Stat(oldPath); errors.Is(error, os.ErrNotExist) {
-		fmt.Println("Le dossier n'existe pas.")
-	} else {
-		err := os.Rename(oldPath, newPath)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-	}
-}
-
-func deleteFolder(name string) {
-	path := "C:\\GoEstiamProjet\\src\\data\\" + name
-
-	if _, error := os.Stat(path); errors.Is(error, os.ErrNotExist) {
-		fmt.Println("Le dossier n'existe pas.")
-	} else {
-		err := os.RemoveAll(path)
-		if err != nil {
-			fmt.Println(err)
-			return
-		} else {
-			fmt.Println("Le dossier, ainsi que toutes les données qu'il contenait, ont été intégralement supprimés.")
-		}
-	}
-}
-
-func createFile(name string) {
-	filePath := "C:\\GoEstiamProjet\\src\\data\\" + name
-	if _, err := os.Stat(filePath); os.IsNotExist(err) {
-		file, err := os.Create(filePath)
-		if err != nil {
-			fmt.Println("Impossible de créer le fichier:", err)
-			return
-		}
-		defer file.Close()
-		fmt.Println("Fichier créé:", filePath)
-	} else {
-		fmt.Println("Le fichier existe déjà.")
-	}
-}
-
-func readFile(name string) {
-	filePath := "C:\\GoEstiamProjet\\src\\data\\" + name
-	data, err := os.ReadFile(filePath)
-	if err != nil {
-		fmt.Println("Impossible de lire le fichier:", err)
-		return
-	}
-	fmt.Println("Contenu du fichier:", string(data))
-}
-
-func updateTextFile(name string, data string) {
-	filePath := "C:\\GoEstiamProjet\\src\\data\\" + name
-	err := os.WriteFile(filePath, []byte(data), 0644)
-	if err != nil {
-		fmt.Println("Impossible de mettre à jour le fichier:", err)
-		return
-	}
-	fmt.Println("Fichier mis à jour.")
-}
-
-func updateNameFile(oldName string, newName string) {
-	oldPath := "C:\\GoEstiamProjet\\src\\data\\" + oldName
-	newPath := "C:\\GoEstiamProjet\\src\\data\\" + newName
-	err := os.Rename(oldPath, newPath)
-	if err != nil {
-		fmt.Println("Impossible de mettre à jour le nom fichier:", err)
-		return
-	}
-	fmt.Println("Nom fichier mis à jour.")
-}
-
-func deleteFile(name string) {
-	filePath := "C:\\GoEstiamProjet\\src\\data\\" + name
-	err := os.Remove(filePath)
-	if err != nil {
-		fmt.Println("Impossible de supprimer le fichier:", err)
-		return
-	}
-	fmt.Println("Fichier supprimé.")
 }
