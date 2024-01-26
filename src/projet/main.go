@@ -160,7 +160,7 @@ func main() {
 			if len(journaux) > 0 {
 				fmt.Printf("Voici l'historique des 50 dernières commandes :\n\n")
 				for _, entry := range journaux {
-					fmt.Println(entry.ID, entry.DH, entry.MF, entry.Argument, entry.Statut)
+					fmt.Println(entry.ID, " | ", entry.DH, " | ", entry.MF, " | ", entry.Argument, " | ", entry.Statut)
 				}
 			}
 
