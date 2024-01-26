@@ -2,8 +2,8 @@ module projet/dossiers
 
 go 1.21.6
 
-replace projet/database => ../database
+replace projet/databases => ../databases
 
-require projet/database v0.0.0-00010101000000-000000000000
+require projet/databases v0.0.0-00010101000000-000000000000
 
 require github.com/go-sql-driver/mysql v1.7.1 // indirect

@@ -1,4 +1,4 @@
-module projet/database
+module projet/databases
 
 go 1.21.6
 

@@ -4,12 +4,27 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"projet/database"
+	"projet/databases"
 	"strings"
+	"time"
 )
 
 func logCommand() {
-	database.ConnectDataBase()
+	databases.ConnectDataBase()
+
+	log := databases.LogData{
+		DH:       time.Now(),
+		MF:       "test1",
+		Argument: "test2",
+		Statut:   "test3",
+	}
+
+	id, err := databases.AddLog(log)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println(" id :", id)
 }
 
 func containsNoSpecificChars(s string) bool {
@@ -24,6 +39,7 @@ func CreateFolder(name, path string) error {
 	if containsNoSpecificChars(name) {
 		return errors.New("la chaîne contient au moins un caractère bloquant")
 	}
+	logCommand()
 	path = path + name
 
 	// Vérifie si un dossier existe déjà avec ce nom
