@@ -163,7 +163,7 @@ func main() {
 
 				case "file":
 					// Commande file
-					command := []string{"create", "read", "rename", "updatetext", "delete"}
+					command := [...]string{"create", "read", "rename", "updatetext", "delete"}
 					if len(command) > 0 {
 						fmt.Println("Voici les sous-commandes disponibles pour la commande file:")
 						for _, entry := range command {
@@ -177,7 +177,7 @@ func main() {
 				}
 			} else if len(os.Args) == 2 {
 				// Commande de base
-				command := []string{"dir", "file"}
+				command := [...]string{"dir", "file"}
 				if len(command) > 0 {
 					for _, entry := range command {
 						fmt.Println(entry)
