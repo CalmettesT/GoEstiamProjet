@@ -1,4 +1,4 @@
-module sql
+module projet/database
 
 go 1.21.6
 

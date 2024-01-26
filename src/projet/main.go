@@ -11,7 +11,6 @@ const path = "C:\\GoEstiamProjet\\src\\data\\"
 
 func main() {
 
-	// database.connectDataBase()
 	// Dossier
 	if len(os.Args) > 1 {
 		switch os.Args[1] {

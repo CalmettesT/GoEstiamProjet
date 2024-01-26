@@ -8,9 +8,9 @@ import (
 	"github.com/go-sql-driver/mysql"
 )
 
-var db *sql.DB
+func ConnectDataBase() {
+	var db *sql.DB
 
-func connectDataBase() {
 	cfg := mysql.Config{
 		User:   "root",
 		Passwd: "root",

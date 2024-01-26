@@ -4,8 +4,13 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"projet/database"
 	"strings"
 )
+
+func logCommand() {
+	database.ConnectDataBase()
+}
 
 func containsNoSpecificChars(s string) bool {
 	// Retourne `false` si `s` contient au moins un des caractères dans `chars`
