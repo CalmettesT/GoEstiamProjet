@@ -40,42 +40,53 @@ func ConnectDataBase() {
 	if pingErr != nil {
 		log.Fatal(pingErr)
 	}
-	fmt.Println("Connexion réussie")
-
 }
 
 func AddLog(log LogData) (int64, error) {
 	result, err := db.Exec("INSERT INTO journal (dh, mf, argument, statut) VALUES (?,?,?,?)", log.DH, log.MF, log.Argument, log.Statut)
 	if err != nil {
-		return 0, fmt.Errorf("addLog %v", err)
+		return 0, fmt.Errorf("AddLog %v", err)
 	}
 
 	id, err := result.LastInsertId()
 	if err != nil {
-		return 0, fmt.Errorf("addLog %v", err)
+		return 0, fmt.Errorf("AddLog %v", err)
 	}
 
 	return id, nil
 }
 
-// func albumByArtist(name string) ([]Album, error) {
-// 	var albums []Album
+func LastJournal() ([]LogData, error) {
+	var logs []LogData
 
-// 	rows, err := db.Query("SELECT * FROM album WHERE artist = ?", name)
-// 	if err != nil {
-// 		return nil, fmt.Errorf("albumByArtist %q: %v", name, err)
-// 	}
+	rows, err := db.Query("SELECT * FROM journal ORDER BY id DESC LIMIT 50;")
+	if err != nil {
+		return nil, fmt.Errorf("LastJournal %v", err)
+	}
 
-// 	defer rows.Close()
+	defer rows.Close()
 
-// 	for rows.Next() {
-// 		var album Album
-// 		if err := rows.Scan(&album.ID, &album.Title, &album.Artist, &album.Price); err != nil {
-// 			return nil, fmt.Errorf("albumByArtist %q: %v", name, err)
-// 		}
+	for rows.Next() {
+		var (
+			log     LogData
+			dhBytes []byte // variable to hold the byte slice
+		)
 
-// 		albums = append(albums, album)
-// 	}
+		// Scan the date/time as []byte
+		if err := rows.Scan(&log.ID, &dhBytes, &log.MF, &log.Argument, &log.Statut); err != nil {
+			return nil, fmt.Errorf("LastJournal %v", err)
+		}
 
-// 	return albums, nil
-// }
+		// Convert []byte to string, then parse string into time.Time
+		dhString := string(dhBytes)
+		layout := "2006-01-02 15:04:05" // adjust the layout to match your datetime format
+		log.DH, err = time.Parse(layout, dhString)
+		if err != nil {
+			return nil, fmt.Errorf("LastJournal%v", err)
+		}
+
+		logs = append(logs, log)
+	}
+
+	return logs, nil
+}

@@ -21,12 +21,10 @@ func logCommand(command, argument, statut string) {
 		Statut:   statut,
 	}
 
-	id, err := databases.AddLog(log)
+	_, err := databases.AddLog(log)
 	if err != nil {
 		fmt.Println(err)
 	}
-
-	fmt.Println("id :", id)
 }
 
 func containsNoSpecificChars(s string) bool {

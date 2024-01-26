@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
+	"projet/databases"
 	"projet/dossiers"
 	"projet/fichiers"
 )
@@ -148,21 +150,19 @@ func main() {
 				fmt.Println("Il est nécessaire de saisir un argument à la suite de la commande file.")
 			}
 		case "hist":
-			// databases.ConnectDataBase()
+			databases.ConnectDataBase()
 
-			// log := databases.LogData{
-			// 	DH:       time.Now(),
-			// 	MF:       module + " " + command,
-			// 	Argument: argument,
-			// 	Statut:   statut,
-			// }
+			journaux, err := databases.LastJournal()
+			if err != nil {
+				log.Fatal(err)
+			}
 
-			// id, err := databases.AddLog(log)
-			// if err != nil {
-			// 	fmt.Println(err)
-			// }
-
-			// fmt.Println("id :", id)
+			if len(journaux) > 0 {
+				fmt.Printf("Voici l'historique des 50 dernières commandes :\n\n")
+				for _, entry := range journaux {
+					fmt.Println(entry.ID, entry.DH, entry.MF, entry.Argument, entry.Statut)
+				}
+			}
 
 		case "-help":
 			// Liste de toutes les commandes disponibles
