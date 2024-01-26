@@ -160,7 +160,7 @@ func TestUpdateNameFile_NotExist(t *testing.T) {
 
 	// Vérification de l'existence du fichier
 	if _, err := os.Stat(oldTestFileName); os.IsNotExist(err) {
-		t.Error("La fonction updateNameFile ne fonctionne pas")
+		t.Error("Le fichier n'existe pas")
 	}
 
 	// Nettoyage: Supprimer le fichier après le test
