@@ -147,6 +147,22 @@ func main() {
 			} else {
 				fmt.Println("Il est nécessaire de saisir un argument à la suite de la commande file.")
 			}
+		case "hist":
+			// databases.ConnectDataBase()
+
+			// log := databases.LogData{
+			// 	DH:       time.Now(),
+			// 	MF:       module + " " + command,
+			// 	Argument: argument,
+			// 	Statut:   statut,
+			// }
+
+			// id, err := databases.AddLog(log)
+			// if err != nil {
+			// 	fmt.Println(err)
+			// }
+
+			// fmt.Println("id :", id)
 
 		case "-help":
 			// Liste de toutes les commandes disponibles

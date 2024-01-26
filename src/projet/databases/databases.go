@@ -45,7 +45,7 @@ func ConnectDataBase() {
 }
 
 func AddLog(log LogData) (int64, error) {
-	result, err := db.Exec("INSERT INTO log (dh, mf, argument, statut) VALUES (?,?,?)", log.DH, log.MF, log.Argument, log.Statut)
+	result, err := db.Exec("INSERT INTO journal (dh, mf, argument, statut) VALUES (?,?,?,?)", log.DH, log.MF, log.Argument, log.Statut)
 	if err != nil {
 		return 0, fmt.Errorf("addLog %v", err)
 	}
@@ -57,3 +57,25 @@ func AddLog(log LogData) (int64, error) {
 
 	return id, nil
 }
+
+// func albumByArtist(name string) ([]Album, error) {
+// 	var albums []Album
+
+// 	rows, err := db.Query("SELECT * FROM album WHERE artist = ?", name)
+// 	if err != nil {
+// 		return nil, fmt.Errorf("albumByArtist %q: %v", name, err)
+// 	}
+
+// 	defer rows.Close()
+
+// 	for rows.Next() {
+// 		var album Album
+// 		if err := rows.Scan(&album.ID, &album.Title, &album.Artist, &album.Price); err != nil {
+// 			return nil, fmt.Errorf("albumByArtist %q: %v", name, err)
+// 		}
+
+// 		albums = append(albums, album)
+// 	}
+
+// 	return albums, nil
+// }
