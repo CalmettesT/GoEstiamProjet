@@ -48,7 +48,7 @@ func CreateFile(name string, text string, path string) error {
 		file, err := os.Create(filePath)
 		if err != nil {
 			logCommand(command, name+" "+filePath+" "+text, "Le fichier existe déjà.")
-			return errors.New("Le fichier existe déjà.")
+			return errors.New("le fichier existe déjà")
 		}
 		defer file.Close()
 

@@ -11,7 +11,7 @@ func TestCreateFolder(t *testing.T) {
 	name := "TestCreateFolder"
 	finalPath := path + name
 
-	err := CreateFolder(name, path)
+	_, err := CreateFolder(name, path)
 	if err != nil {
 		t.Error("Erreur :", err)
 	}
@@ -22,7 +22,7 @@ func TestCreateFolder(t *testing.T) {
 func TestCreateFolderChar(t *testing.T) {
 	name := "TestCreateFolder|*"
 
-	err := CreateFolder(name, path)
+	_, err := CreateFolder(name, path)
 	if err != nil {
 		t.Error("Erreur :", err)
 	}
@@ -37,7 +37,7 @@ func TestReadFolder(t *testing.T) {
 	os.Mkdir(finalPath1, 0755)
 	os.Mkdir(finalPath2, 0755)
 
-	err := ReadFolder(name1, path)
+	_, err := ReadFolder(name1, path)
 	if err != nil {
 		t.Error("Erreur :", err)
 	}
@@ -48,7 +48,7 @@ func TestReadFolder(t *testing.T) {
 func TestReadFolderNotExist(t *testing.T) {
 	name := "TestReadFolderNotExist"
 
-	err := ReadFolder(name, path)
+	_, err := ReadFolder(name, path)
 	if err != nil {
 		t.Error("Erreur :", err)
 	}
@@ -62,7 +62,7 @@ func TestUpdateFolder(t *testing.T) {
 
 	os.Mkdir(finalPath1, 0755)
 
-	err := RenameFolder(name1, name2, path)
+	_, err := RenameFolder(name1, name2, path)
 	if err != nil {
 		t.Error("Erreur :", err)
 	}
@@ -77,7 +77,7 @@ func TestUpdateFolderChar(t *testing.T) {
 
 	os.Mkdir(finalPath, 0755)
 
-	err := RenameFolder(name1, name2, path)
+	_, err := RenameFolder(name1, name2, path)
 	if err != nil {
 		t.Error("Erreur :", err)
 	}
