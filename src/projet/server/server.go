@@ -165,7 +165,6 @@ func getFile(c *gin.Context) {
 		return
 	}
 
-	path := "C:\\GoEstiamProjet\\src\\data\\" // Assurez-vous que ce chemin est correct pour votre environnement
 	content, err := fichiers.ReadFile(name, path)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
