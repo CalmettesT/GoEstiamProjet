@@ -28,8 +28,8 @@ func ServerStart() {
 	{
 		fichierGroup.POST("/", createFile)
 		fichierGroup.GET("/:name", getFile)
-		fichierGroup.PUT("/rename/", renameFile)
-		fichierGroup.PUT("/update/", updateTextFile)
+		fichierGroup.PUT("/rename/:name", renameFile)
+		fichierGroup.PUT("/update/:name", updateTextFile)
 		fichierGroup.DELETE("/:name", deleteFile)
 	}
 	diversGroup := r.Group("/divers")
@@ -179,23 +179,25 @@ func getFile(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"content": content})
 }
 
+// Handler pour renommer un fichier
 func renameFile(c *gin.Context) {
-
 	var requestData struct {
-		OldName string `json:"oldName"`
-		NewName string `json:"newName"`
+		NewName string `json:"name"` // Nouveau nom pour le fichier
 	}
-
 	if err := c.ShouldBindJSON(&requestData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Le corps de la requête n'est pas valide"})
 		return
 	}
-	if requestData.NewName == "" || requestData.OldName == "" {
+
+	// Récupérer l'ancien nom du fichier à partir du paramètre d'URL
+	oldName := c.Param("name")
+	if oldName == "" || requestData.NewName == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Les anciens et nouveaux noms ne peuvent pas être vides"})
 		return
 	}
 
-	err := fichiers.UpdateNameFile(requestData.OldName, requestData.NewName, path)
+	path := "C:\\GoEstiamProjet\\src\\data\\" // Chemin où les fichiers sont stockés
+	err := fichiers.UpdateNameFile(oldName, requestData.NewName, path)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -204,18 +206,25 @@ func renameFile(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Fichier renommé avec succès"})
 }
 
+// Handler pour mettre à jour le texte d'un fichier
 func updateTextFile(c *gin.Context) {
 	var requestData struct {
-		Name    string `json:"name"`
-		Content string `json:"content"`
+		Content string `json:"content"` // Nouveau contenu du fichier
 	}
-
 	if err := c.ShouldBindJSON(&requestData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Le corps de la requête n'est pas valide"})
 		return
 	}
 
-	err := fichiers.UpdateTextFile(requestData.Name, requestData.Content, path)
+	// Récupérer le nom du fichier à partir du paramètre d'URL
+	name := c.Param("name")
+	if name == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Le nom du fichier ne peut pas être vide"})
+		return
+	}
+
+	path := "C:\\GoEstiamProjet\\src\\data\\" // Chemin où les fichiers sont stockés
+	err := fichiers.UpdateTextFile(name, requestData.Content, path)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

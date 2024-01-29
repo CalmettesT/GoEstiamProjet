@@ -13,10 +13,10 @@ const module = "Dir"
 
 func logCommand(command, argument, statut string) {
 	databases.ConnectDataBase()
-
+	mf := fmt.Sprintf("%s %s", module, command)
 	log := databases.LogData{
 		DH:       time.Now(),
-		MF:       module + " " + command,
+		MF:       mf,
 		Argument: argument,
 		Statut:   statut,
 	}
