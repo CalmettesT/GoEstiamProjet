@@ -12,8 +12,58 @@ import (
 
 const path = "C:\\GoEstiamProjet\\src\\data\\"
 
+const config = "offline"
+
 type Command interface {
 	Execute(args []string) error
+}
+
+type Manager interface {
+	CreateFolder(name string) error
+	ReadFolder(name string) error
+	RenameFolder(oldName, newName string) error
+	DeleteFolder(name string) error
+}
+
+// Implémentation Offline
+type OfflineManager struct{}
+
+func (fm OfflineManager) CreateFolder(name string) error {
+	// Créer un dossier
+	_, err := dossiers.CreateFolder(os.Args[3], path)
+	if err != nil {
+		fmt.Println("Erreur :", err)
+	}
+
+	return nil
+}
+
+func (fm OfflineManager) ReadFolder(name string) error {
+	// Lire le dossier
+	_, err := dossiers.ReadFolder(os.Args[3], path)
+	if err != nil {
+		fmt.Println("Erreur :", err)
+	}
+
+	return nil
+}
+
+func (fm OfflineManager) ReadFolder(name string) error {
+	// Lire le dossier
+	_, err := dossiers.ReadFolder(os.Args[3], path)
+	if err != nil {
+		fmt.Println("Erreur :", err)
+	}
+
+	return nil
+}
+
+// Implémentation Online
+type OnlineManager struct{}
+
+func (fm OnlineManager) CreateFolder(name string) error {
+	// implémentation online de la création de dossier
+	return nil
 }
 
 type DirCommand struct{}
@@ -26,11 +76,7 @@ func (c DirCommand) Execute(args []string) error {
 		case "create":
 			// Vérifie si le nombre d'argument est supérieur à 3
 			if len(os.Args) > 3 {
-				// Créer un dossier
-				_, err := dossiers.CreateFolder(os.Args[3], path)
-				if err != nil {
-					fmt.Println("Erreur :", err)
-				}
+
 			} else {
 				fmt.Println("Le nombre d'arguments fournis n'est pas valide.")
 			}
@@ -38,11 +84,7 @@ func (c DirCommand) Execute(args []string) error {
 		case "read":
 			// Vérifie si le nombre d'argument est supérieur à 3
 			if len(os.Args) > 3 {
-				// Lire le dossier
-				_, err := dossiers.ReadFolder(os.Args[3], path)
-				if err != nil {
-					fmt.Println("Erreur :", err)
-				}
+
 			} else {
 				fmt.Println("Le nombre d'arguments fournis n'est pas valide.")
 			}
@@ -231,16 +273,19 @@ func DispatchCommand(commandName string, args []string) error {
 	var cmd Command
 
 	switch commandName {
+
 	case "dir":
 		cmd = DirCommand{}
 	case "file":
 		cmd = FileCommand{}
 	case "server":
 		cmd = ServerCommand{}
+
 	case "hist":
 		cmd = HistoriqueCommand{}
 	case "help":
 		cmd = HelpCommande{}
+
 	default:
 		return fmt.Errorf("commande inconnue: %s", commandName)
 	}

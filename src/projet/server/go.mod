@@ -1,4 +1,4 @@
-module projet/server
+module main
 
 go 1.21.6
 

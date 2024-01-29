@@ -1,4 +1,4 @@
-package server
+package main
 
 import (
 	"net/http"
@@ -11,7 +11,7 @@ import (
 
 const path = "C:\\GoEstiamProjet\\src\\data\\"
 
-func ServerStart() {
+func main() {
 	r := gin.Default()
 
 	// Groupe pour les opérations sur les dossiers
