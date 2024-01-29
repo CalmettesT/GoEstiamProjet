@@ -82,10 +82,11 @@ func (fm OfflineManager) CreateFile(name, text string) error {
 
 func (fm OfflineManager) ReadFile(name string) error {
 	// Lire un fichier
-	_, err := fichiers.ReadFile(name, path)
+	data, err := fichiers.ReadFile(name, path)
 	if err != nil {
 		fmt.Println("Erreur lors de la lecture du fichier :", err)
 	}
+	fmt.Printf("File data: %v\n", data)
 
 	return nil
 }
@@ -104,7 +105,7 @@ func (fm OfflineManager) UpdateText(name, text string) error {
 	// Ajouter du texte dans un fichier
 	err := fichiers.UpdateTextFile(name, text, path)
 	if err != nil {
-		fmt.Println("Erreur lors du renommage du fichier :", err)
+		fmt.Println("Erreur lors de l'écriture du fichier :", err)
 	}
 
 	return nil
@@ -114,7 +115,7 @@ func (fm OfflineManager) DeleteFile(name string) error {
 	// Ajouter du texte dans un fichier
 	err := fichiers.DeleteFile(name, path)
 	if err != nil {
-		fmt.Println("Erreur lors du renommage du fichier :", err)
+		fmt.Println("Erreur lors de la suppression du fichier :", err)
 	}
 
 	return nil
@@ -146,42 +147,92 @@ func (fm OnlineManager) CreateFolder(name string) error {
 	if err != nil {
 		fmt.Println("Erreur lors de la création du dossier :", err)
 	}
+
 	return nil
 }
 
 func (fm OnlineManager) ReadFolder(name string) error {
+	_, err := client.ReadFolder(name)
+	if err != nil {
+		fmt.Println("Erreur lors de la lecture du dossier :", err)
+	}
+
 	return nil
 }
 
 func (fm OnlineManager) RenameFolder(oldName, newName string) error {
+	err := client.RenameFolder(oldName, newName)
+	if err != nil {
+		fmt.Println("Erreur lors du renommage du dossier :", err)
+	}
+
 	return nil
 }
 
 func (fm OnlineManager) DeleteFolder(name string) error {
+	err := client.DeleteFolder(name)
+	if err != nil {
+		fmt.Println("Erreur lors de la suppression du dossier :", err)
+	}
+
 	return nil
 }
 
 func (fm OnlineManager) CreateFile(name, text string) error {
+	_, err := client.CreateFile(name, text)
+	if err != nil {
+		fmt.Println("Erreur lors de la création du fichier :", err)
+	}
+
 	return nil
 }
 
 func (fm OnlineManager) ReadFile(name string) error {
+	_, err := client.ReadFile(name)
+	if err != nil {
+		fmt.Println("Erreur lors de la lecture du fichier :", err)
+	}
+
 	return nil
 }
 
 func (fm OnlineManager) RenameFile(oldName, newName string) error {
+	err := client.UpdateNameFile(oldName, newName)
+	if err != nil {
+		fmt.Println("Erreur lors du renommage du fichier :", err)
+	}
+
 	return nil
 }
 
 func (fm OnlineManager) UpdateText(name, text string) error {
+	err := client.UpdateTextFile(name, text)
+	if err != nil {
+		fmt.Println("Erreur lors de l'écriture du fichier :", err)
+	}
+
 	return nil
 }
 
 func (fm OnlineManager) DeleteFile(name string) error {
+	err := client.DeleteFile(name)
+	if err != nil {
+		fmt.Println("Erreur lors de la suppression du fichier :", err)
+	}
+
 	return nil
 }
 
 func (fm OnlineManager) Historic() error {
+	data, err := client.Hist()
+	if err != nil {
+		fmt.Println("Erreur lors de l'affichage de l'historique :", err)
+	}
+
+	for _, entry := range data {
+		fmt.Println("-", entry)
+	}
+
 	return nil
 }
 
@@ -284,6 +335,44 @@ func main() {
 			}
 
 		case "help":
+
+			// Liste de toutes les commandes disponibles
+			if len(os.Args) > 2 {
+				switch os.Args[2] {
+				case "dir":
+					// Commande dir
+					command := []string{"create", "read", "rename", "delete"}
+					if len(command) > 0 {
+						fmt.Println("Voici les sous-commandes disponibles pour la commande dir:")
+						for _, entry := range command {
+							fmt.Println("-", entry)
+						}
+					}
+
+				case "file":
+					// Commande file
+					command := [...]string{"create", "read", "rename", "update", "delete"}
+					if len(command) > 0 {
+						fmt.Println("Voici les sous-commandes disponibles pour la commande file:")
+						for _, entry := range command {
+							fmt.Println("-", entry)
+						}
+					}
+
+				default:
+					fmt.Println("Aucune commande ne correspond à votre saisie.")
+
+				}
+			} else if len(os.Args) == 2 {
+				// Commande de base
+				command := [...]string{"dir", "file", "hist"}
+				if len(command) > 0 {
+					fmt.Println("Voici les commandes disponibles :")
+					for _, entry := range command {
+						fmt.Println("-", entry)
+					}
+				}
+			}
 
 		case "hist":
 			manager.Historic()

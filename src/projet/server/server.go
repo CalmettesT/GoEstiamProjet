@@ -82,8 +82,8 @@ func getFolder(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
-	c.JSON(http.StatusOK, gin.H{"content": content})
+	c.IndentedJSON(http.StatusOK, content)
+	// c.JSON(http.StatusOK, gin.H{"content": content})
 }
 
 func renameFolder(c *gin.Context) {
@@ -211,6 +211,7 @@ func updateTextFile(c *gin.Context) {
 	var requestData struct {
 		Content string `json:"content"` // Nouveau contenu du fichier
 	}
+
 	if err := c.ShouldBindJSON(&requestData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Le corps de la requête n'est pas valide"})
 		return
