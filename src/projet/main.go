@@ -2,8 +2,11 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
+	"projet/databases"
 	"projet/dossiers"
+	"projet/fichiers"
 )
 
 const path = "C:\\GoEstiamProjet\\src\\data\\"
@@ -47,7 +50,7 @@ func (fm OfflineManager) ReadFolder(name string) error {
 }
 
 func (fm OfflineManager) RenameFolder(oldName, newName string) error {
-	// Met à jour le nom du dossier
+	// Renommer un dossier
 	_, err := dossiers.RenameFolder(oldName, newName, path)
 	if err != nil {
 		fmt.Println("Erreur lors du renommage du dossier :", err)
@@ -67,26 +70,70 @@ func (fm OfflineManager) DeleteFolder(name string) error {
 }
 
 func (fm OfflineManager) CreateFile(name, text string) error {
+	// Créer un fichier
+	_, err := fichiers.CreateFile(name, text, path)
+	if err != nil {
+		fmt.Println("Erreur lors de la création du fichier :", err)
+	}
+
 	return nil
 }
 
 func (fm OfflineManager) ReadFile(name string) error {
+	// Lire un fichier
+	_, err := fichiers.ReadFile(name, path)
+	if err != nil {
+		fmt.Println("Erreur lors de la lecture du fichier :", err)
+	}
+
 	return nil
 }
 
 func (fm OfflineManager) RenameFile(oldName, newName string) error {
+	// Renommer un fichier
+	_, err := fichiers.UpdateNameFile(oldName, newName, path)
+	if err != nil {
+		fmt.Println("Erreur lors du renommage du fichier :", err)
+	}
+
 	return nil
 }
 
 func (fm OfflineManager) UpdateText(name, text string) error {
+	// Ajouter du texte dans un fichier
+	_, err := fichiers.UpdateTextFile(name, text, path)
+	if err != nil {
+		fmt.Println("Erreur lors du renommage du fichier :", err)
+	}
+
 	return nil
 }
 
 func (fm OfflineManager) DeleteFile(name string) error {
+	// Ajouter du texte dans un fichier
+	_, err := fichiers.DeleteFile(name, path)
+	if err != nil {
+		fmt.Println("Erreur lors du renommage du fichier :", err)
+	}
+
 	return nil
 }
 
 func (fm OfflineManager) Historique() error {
+	databases.ConnectDataBase()
+
+	journaux, err := databases.LastJournal()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if len(journaux) > 0 {
+		fmt.Printf("Voici l'historique des 50 dernières commandes :\n\n")
+		for _, entry := range journaux {
+			fmt.Println(entry.ID, " | ", entry.DH, " | ", entry.MF, " | ", entry.Argument, " | ", entry.Statut)
+		}
+	}
+
 	return nil
 }
 
