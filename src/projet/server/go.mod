@@ -10,6 +10,7 @@ replace projet/dossiers => ../dossiers
 
 require (
 	github.com/gin-gonic/gin v1.9.1
+	projet/databases v0.0.0-00010101000000-000000000000
 	projet/dossiers v0.0.0-00010101000000-000000000000
 	projet/fichiers v0.0.0-00010101000000-000000000000
 )
@@ -40,5 +41,4 @@ require (
 	golang.org/x/text v0.9.0 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	projet/databases v0.0.0-00010101000000-000000000000 // indirect
 )

@@ -2,6 +2,7 @@ package server
 
 import (
 	"net/http"
+	"projet/databases"
 	"projet/dossiers"
 	"projet/fichiers"
 
@@ -30,6 +31,10 @@ func ServerStart() {
 		fichierGroup.PUT("/rename/", renameFile)
 		fichierGroup.PUT("/update/", updateTextFile)
 		fichierGroup.DELETE("/:name", deleteFile)
+	}
+	diversGroup := r.Group("/divers")
+	{
+		diversGroup.GET("/hist", historiqueCommand)
 	}
 
 	// Démarrer le serveur Gin sur le port 8080
@@ -234,4 +239,16 @@ func deleteFile(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Fichier supprimé avec succès"})
+}
+
+func historiqueCommand(c *gin.Context) {
+
+	databases.ConnectDataBase()
+
+	journaux, err := databases.LastJournal()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	}
+
+	c.JSON(http.StatusOK, gin.H{"Historique": journaux})
 }
