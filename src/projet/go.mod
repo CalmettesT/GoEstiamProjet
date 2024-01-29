@@ -10,6 +10,8 @@ replace projet/databases => ./databases
 
 replace projet/server => ./server
 
+replace projet/client => ./client
+
 require (
 	projet/dossiers v0.0.0-00010101000000-000000000000
 	projet/fichiers v0.0.0-00010101000000-000000000000
