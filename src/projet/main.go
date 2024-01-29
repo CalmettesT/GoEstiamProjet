@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"projet/client"
 	"projet/databases"
 	"projet/dossiers"
 	"projet/fichiers"
@@ -11,7 +12,7 @@ import (
 
 const path = "C:\\GoEstiamProjet\\src\\data\\"
 
-const config = "offline"
+const config = "online"
 
 type Manager interface {
 	CreateFolder(name string) error
@@ -141,6 +142,10 @@ func (fm OfflineManager) Historic() error {
 type OnlineManager struct{}
 
 func (fm OnlineManager) CreateFolder(name string) error {
+	_, err := client.CreateFolder(name)
+	if err != nil {
+		fmt.Println("Erreur lors de la création du dossier :", err)
+	}
 	return nil
 }
 

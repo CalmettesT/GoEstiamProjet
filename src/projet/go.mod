@@ -13,6 +13,7 @@ replace projet/server => ./server
 replace projet/client => ./client
 
 require (
+	projet/client v0.0.0-00010101000000-000000000000
 	projet/databases v0.0.0-00010101000000-000000000000
 	projet/dossiers v0.0.0-00010101000000-000000000000
 	projet/fichiers v0.0.0-00010101000000-000000000000

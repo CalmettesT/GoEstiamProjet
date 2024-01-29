@@ -23,7 +23,7 @@ func ConnectDataBase() {
 
 	cfg := mysql.Config{
 		User:   "root",
-		Passwd: "1234",
+		Passwd: "root",
 		Net:    "tcp",
 		Addr:   "127.0.0.1:3306",
 		DBName: "go",
