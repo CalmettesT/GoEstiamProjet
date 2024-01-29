@@ -29,7 +29,7 @@ func logCommand(command, argument, statut string) {
 
 func containsNoSpecificChars(s string) bool {
 	// Retourne `false` si `s` contient au moins un des caractères dans `chars`
-	chars := "\\/:*?\"<>|"
+	chars := "/:*?\"<>|"
 
 	return strings.ContainsAny(s, chars)
 }
@@ -47,8 +47,8 @@ func CreateFile(name string, text string, path string) error {
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
 		file, err := os.Create(filePath)
 		if err != nil {
-			logCommand(command, name+" "+filePath+" "+text, "Le fichier existe déjà.")
-			return errors.New("le fichier existe déjà")
+			logCommand(command, name+" "+filePath+" "+text, "impossible de créer le fichier")
+			return errors.New("impossible de créer le fichier")
 		}
 		defer file.Close()
 
@@ -64,8 +64,8 @@ func CreateFile(name string, text string, path string) error {
 		fmt.Println("Fichier créé")
 		return nil
 	} else {
-		logCommand(command, name+" "+filePath+" "+text, "le fichier existe déjà")
-		return errors.New("le fichier existe déjà")
+		logCommand(command, name+" "+filePath+" "+text, "le fichier existe deja")
+		return errors.New("le fichier existe deja")
 	}
 }
 
