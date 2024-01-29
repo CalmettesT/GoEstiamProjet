@@ -23,7 +23,7 @@ type Manager interface {
 	RenameFile(oldName, newName string) error
 	DeleteFile(name string) error
 	UpdateText(name, text string) error
-	Historique() error
+	Historic() error
 }
 
 // Implémentation Offline
@@ -71,7 +71,7 @@ func (fm OfflineManager) DeleteFolder(name string) error {
 
 func (fm OfflineManager) CreateFile(name, text string) error {
 	// Créer un fichier
-	_, err := fichiers.CreateFile(name, text, path)
+	err := fichiers.CreateFile(name, text, path)
 	if err != nil {
 		fmt.Println("Erreur lors de la création du fichier :", err)
 	}
@@ -91,7 +91,7 @@ func (fm OfflineManager) ReadFile(name string) error {
 
 func (fm OfflineManager) RenameFile(oldName, newName string) error {
 	// Renommer un fichier
-	_, err := fichiers.UpdateNameFile(oldName, newName, path)
+	err := fichiers.UpdateNameFile(oldName, newName, path)
 	if err != nil {
 		fmt.Println("Erreur lors du renommage du fichier :", err)
 	}
@@ -101,7 +101,7 @@ func (fm OfflineManager) RenameFile(oldName, newName string) error {
 
 func (fm OfflineManager) UpdateText(name, text string) error {
 	// Ajouter du texte dans un fichier
-	_, err := fichiers.UpdateTextFile(name, text, path)
+	err := fichiers.UpdateTextFile(name, text, path)
 	if err != nil {
 		fmt.Println("Erreur lors du renommage du fichier :", err)
 	}
@@ -111,7 +111,7 @@ func (fm OfflineManager) UpdateText(name, text string) error {
 
 func (fm OfflineManager) DeleteFile(name string) error {
 	// Ajouter du texte dans un fichier
-	_, err := fichiers.DeleteFile(name, path)
+	err := fichiers.DeleteFile(name, path)
 	if err != nil {
 		fmt.Println("Erreur lors du renommage du fichier :", err)
 	}
@@ -119,7 +119,7 @@ func (fm OfflineManager) DeleteFile(name string) error {
 	return nil
 }
 
-func (fm OfflineManager) Historique() error {
+func (fm OfflineManager) Historic() error {
 	databases.ConnectDataBase()
 
 	journaux, err := databases.LastJournal()
@@ -176,7 +176,7 @@ func (fm OnlineManager) DeleteFile(name string) error {
 	return nil
 }
 
-func (fm OnlineManager) Historique() error {
+func (fm OnlineManager) Historic() error {
 	return nil
 }
 
@@ -225,7 +225,6 @@ func main() {
 					} else {
 						fmt.Println("Nom du dossier manquant")
 					}
-				// Ajoutez des cas pour les autres commandes ici...
 				default:
 					fmt.Println("Commande inconnue")
 				}
@@ -234,8 +233,58 @@ func main() {
 			}
 
 		case "file":
+			if len(os.Args) > 2 {
+				sousCommandName := os.Args[2]
+				switch sousCommandName {
+				case "create":
+					if len(os.Args) > 4 {
+						manager.CreateFile(os.Args[3], os.Args[4])
+					} else {
+						fmt.Println("Le nom du fichier ou le texte est manquant")
+					}
+
+				case "read":
+					if len(os.Args) > 3 {
+						manager.ReadFile(os.Args[3])
+					} else {
+						fmt.Println("Nom du fichier manquant")
+					}
+
+				case "rename":
+					if len(os.Args) > 4 {
+						manager.RenameFile(os.Args[3], os.Args[4])
+					} else {
+						fmt.Println("Nom des fichiers manquant")
+					}
+
+				case "update":
+					if len(os.Args) > 4 {
+						manager.UpdateText(os.Args[3], os.Args[4])
+					} else {
+						fmt.Println("Le nom du fichier ou le texte est manquant")
+					}
+
+				case "delete":
+					if len(os.Args) > 3 {
+						manager.DeleteFile(os.Args[3])
+					} else {
+						fmt.Println("Nom du fichier manquant")
+					}
+				// Ajoutez des cas pour les autres commandes ici...
+				default:
+					fmt.Println("Commande inconnue")
+				}
+			} else {
+				fmt.Println("Veuillez saisir une sous-commande.")
+			}
 
 		case "help":
+
+		case "hist":
+			manager.Historic()
+
+		default:
+			fmt.Println("Commande inconnue")
 		}
 
 	} else {
