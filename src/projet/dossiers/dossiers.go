@@ -159,7 +159,7 @@ func RenameFolder(oldName, newName, path string) (string, error) {
 	}
 
 	logCommand(command, oldName+" "+newName+" "+path, "Le nom du dossier a bien été modifié, ainsi que toutes les données qu'il contenait, ont été intégralement supprimés.")
-	fmt.Println("Le nom du dossier a bien été modifié, ainsi que toutes les données qu'il contenait, ont été intégralement supprimés.")
+	fmt.Println("Le nom du dossier a bien été modifié.")
 
 	return newPath, nil
 }
