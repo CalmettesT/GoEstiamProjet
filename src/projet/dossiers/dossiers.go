@@ -29,7 +29,7 @@ func logCommand(command, argument, statut string) {
 
 func containsNoSpecificChars(s string) bool {
 	// Retourne `false` si `s` contient au moins un des caractères dans `chars`
-	chars := "\\/:*?\"<>|"
+	chars := "/:*?\"<>|"
 
 	return strings.ContainsAny(s, chars)
 }
