@@ -32,6 +32,8 @@ func main() {
 		fichierGroup.PUT("/update/:name", updateTextFile)
 		fichierGroup.DELETE("/:name", deleteFile)
 	}
+
+	// Groupe pour les opérations sur les diverses requêtes
 	diversGroup := r.Group("/divers")
 	{
 		diversGroup.GET("/hist", historiqueCommand)
@@ -67,7 +69,6 @@ func createFolder(c *gin.Context) {
 }
 
 func getFolder(c *gin.Context) {
-	// Récupérer le nom du dossier à partir du paramètre d'URL
 	name := c.Param("name")
 
 	// Vérifier si le nom n'est pas vide
@@ -87,11 +88,12 @@ func getFolder(c *gin.Context) {
 }
 
 func renameFolder(c *gin.Context) {
-	// Récupérer l'ancien nom du dossier à partir du paramètre d'URL
 	oldName := c.Param("name")
+
 	var requestData struct {
 		NewName string `json:"name"` // Nouveau nom pour le dossier
 	}
+
 	if err := c.ShouldBindJSON(&requestData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Le corps de la requête n'est pas valide"})
 		return
@@ -113,7 +115,6 @@ func renameFolder(c *gin.Context) {
 }
 
 func deleteFolder(c *gin.Context) {
-	// Récupérer le nom du dossier à partir du paramètre d'URL
 	name := c.Param("name")
 
 	// Vérifier si le nom n'est pas vide
@@ -133,13 +134,11 @@ func deleteFolder(c *gin.Context) {
 
 // Handlers pour les opérations sur les fichiers
 func createFile(c *gin.Context) {
-	// Définir une structure pour les données attendues de la requête
 	var requestData struct {
 		Name    string `json:"name"`    // Nom du fichier à créer
 		Content string `json:"content"` // Contenu du fichier
 	}
 
-	// Essayer de lier les données JSON entrantes à la structure
 	if err := c.ShouldBindJSON(&requestData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -158,13 +157,12 @@ func createFile(c *gin.Context) {
 		return
 	}
 
-	// Si la création est réussie, envoyer une réponse de succès
 	c.JSON(http.StatusCreated, gin.H{"message": "Fichier créé avec succès", "filePath": filePath})
 }
 
 func getFile(c *gin.Context) {
-	// Récupérer le nom du fichier à partir du paramètre d'URL
 	name := c.Param("name")
+
 	if name == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Le nom du fichier ne peut pas être vide"})
 		return
@@ -179,11 +177,11 @@ func getFile(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"content": content})
 }
 
-// Handler pour renommer un fichier
 func renameFile(c *gin.Context) {
 	var requestData struct {
 		NewName string `json:"name"` // Nouveau nom pour le fichier
 	}
+
 	if err := c.ShouldBindJSON(&requestData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Le corps de la requête n'est pas valide"})
 		return
@@ -205,7 +203,6 @@ func renameFile(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Fichier renommé avec succès", "filePath": filePath})
 }
 
-// Handler pour mettre à jour le texte d'un fichier
 func updateTextFile(c *gin.Context) {
 	var requestData struct {
 		Content string `json:"content"` // Nouveau contenu du fichier
