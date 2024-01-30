@@ -2,6 +2,7 @@ package databases
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"log"
 	"time"
@@ -10,11 +11,11 @@ import (
 )
 
 type LogData struct {
-	ID       int64
-	DH       time.Time
-	MF       string
-	Argument string
-	Statut   string
+	ID       int64     `json:"id"`
+	DH       time.Time `json:"dh"`
+	MF       string    `json:"mf"`
+	Argument string    `json:"argument"`
+	Statut   string    `json:"statut"`
 }
 
 var db *sql.DB
@@ -23,7 +24,7 @@ func ConnectDataBase() {
 
 	cfg := mysql.Config{
 		User:   "root",
-		Passwd: "root",
+		Passwd: "1234",
 		Net:    "tcp",
 		Addr:   "127.0.0.1:3306",
 		DBName: "go",
@@ -56,8 +57,7 @@ func AddLog(log LogData) (int64, error) {
 	return id, nil
 }
 
-func LastJournal() ([]LogData, error) {
-	var logs []LogData
+func LastJournal() ([]byte, error) {
 
 	rows, err := db.Query("SELECT * FROM journal ORDER BY id DESC LIMIT 50;")
 	if err != nil {
@@ -66,6 +66,7 @@ func LastJournal() ([]LogData, error) {
 
 	defer rows.Close()
 
+	var logs []LogData
 	for rows.Next() {
 		var (
 			log     LogData
@@ -88,5 +89,10 @@ func LastJournal() ([]LogData, error) {
 		logs = append(logs, log)
 	}
 
-	return logs, nil
+	jsonData, err := json.Marshal(logs)
+	if err != nil {
+		return nil, err
+	}
+
+	return jsonData, nil
 }

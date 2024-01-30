@@ -15,7 +15,11 @@ func TestCreateFile_Success(t *testing.T) {
 	filePath := path + testFileName
 
 	// Appel de la fonction CreateFile
-	CreateFile(testFileName, textTest, path)
+	_, err := CreateFile(testFileName, textTest, path)
+
+	if err != nil {
+		t.Error("Erreur :", err)
+	}
 
 	// Vérification de l'existence du fichier
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
@@ -35,8 +39,11 @@ func TestCreateFile_FileExist(t *testing.T) {
 	file.Close()
 
 	// Appel de la fonction CreateFile
-	CreateFile(testFileName, textTest, path)
+	_, err := CreateFile(testFileName, textTest, path)
 
+	if err != nil {
+		t.Error("Erreur :", err)
+	}
 	// Vérification de l'existence du fichier
 	if _, err2 := os.Stat(filePath); err2 == nil {
 		t.Error("Le Fichier existe déjà")
@@ -59,7 +66,11 @@ func TestReadFile_Success(t *testing.T) {
 	os.WriteFile(filePath, []byte(textTest), 0644)
 
 	// Appel de la fonction ReadFile
-	data, _ := ReadFile(testFileName, path)
+	data, err := ReadFile(testFileName, path)
+
+	if err != nil {
+		t.Error("Erreur :", err)
+	}
 
 	// Vérification de l'existence du fichier
 	if data != textTest {
@@ -93,12 +104,16 @@ func TestUpdateTextFile_Success(t *testing.T) {
 	file.Close()
 
 	//Ecriture dans le fichier
-	UpdateTextFile(testFileName, textTest, path)
+	dataWrite, err := UpdateTextFile(testFileName, textTest, path)
+
+	if err != nil {
+		t.Error("Erreur :", err)
+	}
 
 	data, _ := os.ReadFile(filePath)
 
 	// Vérification de l'existence du fichier
-	if string(data) != textTest {
+	if string(data) != dataWrite {
 		t.Error("Le fichier n'existe pas donc l'updateText n'écrit pas")
 	}
 
@@ -113,13 +128,16 @@ func TestUpdateTextFile_FileNotExist(t *testing.T) {
 	filePath := path + testFileName
 
 	//ecriture data
-	UpdateTextFile(testFileName, textTest, path)
+	dataWrite, err := UpdateTextFile(testFileName, textTest, path)
 
+	if err != nil {
+		t.Error("Erreur :", err)
+	}
 	// Appel de la fonction ReadFile
 	data, _ := os.ReadFile(filePath)
 
 	// Vérification de l'existence du fichier
-	if string(data) != textTest {
+	if string(data) != dataWrite {
 		t.Error("Le fichier n'existe pas")
 	}
 }
@@ -134,8 +152,12 @@ func TestUpdateNameFile_Success(t *testing.T) {
 	file.Close()
 
 	//Ecriture dans le fichier
-	UpdateNameFile(oldTestFileName, newNameTest, path)
+	_, err := UpdateNameFile(oldTestFileName, newNameTest, path)
 	newfilePath := path + newNameTest
+
+	if err != nil {
+		t.Error("Erreur :", err)
+	}
 
 	// Vérification de l'existence du fichier
 	if _, err := os.Stat(newfilePath); os.IsNotExist(err) {
@@ -155,15 +177,19 @@ func TestUpdateNameFile_NotExist(t *testing.T) {
 	filePath := path + oldTestFileName
 
 	//Rename dans le fichier
-	UpdateNameFile(oldTestFileName, newNameTest, path)
+	_, err := UpdateNameFile(oldTestFileName, newNameTest, path)
 	newfilePath := path + newNameTest
+
+	if err != nil {
+		t.Error("Erreur :", err)
+	}
 
 	// Vérification de l'existence du fichier
 	if _, err := os.Stat(oldTestFileName); os.IsNotExist(err) {
 		t.Error("Le fichier n'existe pas")
 	}
 
-	// Nettoyage: Supprimer le fichier après le test
+	// Nettoyage: Supprimer les fichiers après le test
 	os.Remove(filePath)
 	os.Remove(newfilePath)
 }
@@ -177,7 +203,10 @@ func TestDeleteFile_Success(t *testing.T) {
 	file.Close()
 
 	// Appel de la fonction DeleteFile
-	DeleteFile(testFileName, path)
+	_, err := DeleteFile(testFileName, path)
+	if err != nil {
+		t.Error("Erreur :", err)
+	}
 
 	// Vérification de l'existence du fichier
 	if _, err2 := os.Stat(filePath); err2 == nil {
@@ -195,8 +224,10 @@ func TestDeleteFile_NotExist(t *testing.T) {
 	filePath := path + testFileName
 
 	// Appel de la fonction DeleteFile
-	DeleteFile(testFileName, path)
-
+	_, err := DeleteFile(testFileName, path)
+	if err != nil {
+		t.Error("Erreur :", err)
+	}
 	// Vérification de l'existence du fichier
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
 		t.Errorf("Le fichier n'existe pas donc pas de supression %s", testFileName)

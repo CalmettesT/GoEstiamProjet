@@ -92,7 +92,7 @@ func TestDelete(t *testing.T) {
 
 	os.Mkdir(finalPath, 0755)
 
-	err := DeleteFolder(name, path)
+	_, err := DeleteFolder(name, path)
 	if err != nil {
 		t.Error("Erreur :", err)
 	}
@@ -103,7 +103,7 @@ func TestDelete(t *testing.T) {
 func TestDeleteNotExist(t *testing.T) {
 	name := "TestDeleteNotExist"
 
-	err := DeleteFolder(name, path)
+	_, err := DeleteFolder(name, path)
 	if err != nil {
 		t.Error("Erreur :", err)
 	}

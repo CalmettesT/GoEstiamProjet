@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"projet/databases"
 	"projet/dossiers"
@@ -82,15 +84,15 @@ func getFolder(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
 	c.IndentedJSON(http.StatusOK, content)
-	// c.JSON(http.StatusOK, gin.H{"content": content})
 }
 
 func renameFolder(c *gin.Context) {
 	// Récupérer l'ancien nom du dossier à partir du paramètre d'URL
 	oldName := c.Param("name")
 	var requestData struct {
-		NewName string `json:"newName"` // Nouveau nom pour le dossier
+		NewName string `json:"name"` // Nouveau nom pour le dossier
 	}
 	if err := c.ShouldBindJSON(&requestData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Le corps de la requête n'est pas valide"})
@@ -109,7 +111,7 @@ func renameFolder(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Dossier renommé avec succès", "folerpath": folderPath})
+	c.JSON(http.StatusOK, gin.H{"message": "Dossier renommé avec succès", "folderPath": folderPath})
 }
 
 func deleteFolder(c *gin.Context) {
@@ -122,13 +124,13 @@ func deleteFolder(c *gin.Context) {
 		return
 	}
 
-	err := dossiers.DeleteFolder(name, path)
+	folderPath, err := dossiers.DeleteFolder(name, path)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Dossier supprimé avec succès"})
+	c.JSON(http.StatusOK, gin.H{"message": "Dossier supprimé avec succès", "folderPath": folderPath})
 }
 
 // Handlers pour les opérations sur les fichiers
@@ -152,14 +154,14 @@ func createFile(c *gin.Context) {
 	}
 
 	// Appeler la fonction CreateFile du package fichiers
-	err := fichiers.CreateFile(requestData.Name, requestData.Content, path)
+	filePath, err := fichiers.CreateFile(requestData.Name, requestData.Content, path)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
 	// Si la création est réussie, envoyer une réponse de succès
-	c.JSON(http.StatusCreated, gin.H{"message": "Fichier créé avec succès"})
+	c.JSON(http.StatusCreated, gin.H{"message": "Fichier créé avec succès", "filePath": filePath})
 }
 
 func getFile(c *gin.Context) {
@@ -196,14 +198,13 @@ func renameFile(c *gin.Context) {
 		return
 	}
 
-	path := "C:\\GoEstiamProjet\\src\\data\\" // Chemin où les fichiers sont stockés
-	err := fichiers.UpdateNameFile(oldName, requestData.NewName, path)
+	filePath, err := fichiers.UpdateNameFile(oldName, requestData.NewName, path)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Fichier renommé avec succès"})
+	c.JSON(http.StatusOK, gin.H{"message": "Fichier renommé avec succès", "filePath": filePath})
 }
 
 // Handler pour mettre à jour le texte d'un fichier
@@ -224,14 +225,13 @@ func updateTextFile(c *gin.Context) {
 		return
 	}
 
-	path := "C:\\GoEstiamProjet\\src\\data\\" // Chemin où les fichiers sont stockés
-	err := fichiers.UpdateTextFile(name, requestData.Content, path)
+	content, err := fichiers.UpdateTextFile(name, requestData.Content, path)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Contenu du fichier mis à jour avec succès"})
+	c.JSON(http.StatusOK, gin.H{"message": "Contenu du fichier mis à jour avec succès", "content": content})
 }
 
 func deleteFile(c *gin.Context) {
@@ -242,13 +242,13 @@ func deleteFile(c *gin.Context) {
 		return
 	}
 
-	err := fichiers.DeleteFile(name, path)
+	filePath, err := fichiers.DeleteFile(name, path)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Fichier supprimé avec succès"})
+	c.JSON(http.StatusOK, gin.H{"message": "Fichier supprimé avec succès", "filePath": filePath})
 }
 
 func historiqueCommand(c *gin.Context) {
@@ -260,5 +260,7 @@ func historiqueCommand(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
 
-	c.JSON(http.StatusOK, gin.H{"Historique": journaux})
+	fmt.Println(json.Unmarshal(journaux))
+
+	c.JSON(http.StatusOK, gin.H{"history": journaux})
 }

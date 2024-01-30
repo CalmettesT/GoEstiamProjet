@@ -12,7 +12,7 @@ import (
 
 const path = "C:\\GoEstiamProjet\\src\\data\\"
 
-const config = "online"
+const config = "offline"
 
 type Manager interface {
 	CreateFolder(name string) error
@@ -24,7 +24,7 @@ type Manager interface {
 	RenameFile(oldName, newName string) error
 	DeleteFile(name string) error
 	UpdateText(name, text string) error
-	Historic() error
+	History() error
 }
 
 // Implémentation Offline
@@ -62,7 +62,7 @@ func (fm OfflineManager) RenameFolder(oldName, newName string) error {
 
 func (fm OfflineManager) DeleteFolder(name string) error {
 	// Delete un dossier
-	err := dossiers.DeleteFolder(name, path)
+	_, err := dossiers.DeleteFolder(name, path)
 	if err != nil {
 		fmt.Println("Erreur lors de la suppression du dossier :", err)
 	}
@@ -72,7 +72,7 @@ func (fm OfflineManager) DeleteFolder(name string) error {
 
 func (fm OfflineManager) CreateFile(name, text string) error {
 	// Créer un fichier
-	err := fichiers.CreateFile(name, text, path)
+	_, err := fichiers.CreateFile(name, text, path)
 	if err != nil {
 		fmt.Println("Erreur lors de la création du fichier :", err)
 	}
@@ -93,7 +93,7 @@ func (fm OfflineManager) ReadFile(name string) error {
 
 func (fm OfflineManager) RenameFile(oldName, newName string) error {
 	// Renommer un fichier
-	err := fichiers.UpdateNameFile(oldName, newName, path)
+	_, err := fichiers.UpdateNameFile(oldName, newName, path)
 	if err != nil {
 		fmt.Println("Erreur lors du renommage du fichier :", err)
 	}
@@ -103,7 +103,7 @@ func (fm OfflineManager) RenameFile(oldName, newName string) error {
 
 func (fm OfflineManager) UpdateText(name, text string) error {
 	// Ajouter du texte dans un fichier
-	err := fichiers.UpdateTextFile(name, text, path)
+	_, err := fichiers.UpdateTextFile(name, text, path)
 	if err != nil {
 		fmt.Println("Erreur lors de l'écriture du fichier :", err)
 	}
@@ -113,7 +113,7 @@ func (fm OfflineManager) UpdateText(name, text string) error {
 
 func (fm OfflineManager) DeleteFile(name string) error {
 	// Ajouter du texte dans un fichier
-	err := fichiers.DeleteFile(name, path)
+	_, err := fichiers.DeleteFile(name, path)
 	if err != nil {
 		fmt.Println("Erreur lors de la suppression du fichier :", err)
 	}
@@ -121,7 +121,7 @@ func (fm OfflineManager) DeleteFile(name string) error {
 	return nil
 }
 
-func (fm OfflineManager) Historic() error {
+func (fm OfflineManager) History() error {
 	databases.ConnectDataBase()
 
 	journaux, err := databases.LastJournal()
@@ -143,87 +143,105 @@ func (fm OfflineManager) Historic() error {
 type OnlineManager struct{}
 
 func (fm OnlineManager) CreateFolder(name string) error {
-	_, err := client.CreateFolder(name)
+	folderPath, err := client.CreateFolder(name)
 	if err != nil {
 		fmt.Println("Erreur lors de la création du dossier :", err)
+	} else {
+		fmt.Println("Voici le path du nouveau dossier :", folderPath)
 	}
 
 	return nil
 }
 
 func (fm OnlineManager) ReadFolder(name string) error {
-	_, err := client.ReadFolder(name)
+	datas, err := client.ReadFolder(name)
 	if err != nil {
 		fmt.Println("Erreur lors de la lecture du dossier :", err)
+	} else {
+		fmt.Println("Contenu du dossier :", datas)
 	}
 
 	return nil
 }
 
 func (fm OnlineManager) RenameFolder(oldName, newName string) error {
-	err := client.RenameFolder(oldName, newName)
+	folderPath, err := client.RenameFolder(oldName, newName)
 	if err != nil {
 		fmt.Println("Erreur lors du renommage du dossier :", err)
+	} else {
+		fmt.Println("Voici le nouveau path du dossier :", folderPath)
 	}
 
 	return nil
 }
 
 func (fm OnlineManager) DeleteFolder(name string) error {
-	err := client.DeleteFolder(name)
+	folderPath, err := client.DeleteFolder(name)
 	if err != nil {
 		fmt.Println("Erreur lors de la suppression du dossier :", err)
+	} else {
+		fmt.Println("Ancien path du dossier :", folderPath)
 	}
 
 	return nil
 }
 
 func (fm OnlineManager) CreateFile(name, text string) error {
-	_, err := client.CreateFile(name, text)
+	filePath, err := client.CreateFile(name, text)
 	if err != nil {
 		fmt.Println("Erreur lors de la création du fichier :", err)
 	}
+
+	fmt.Println("Voici le path du nouveau fichier :", filePath)
 
 	return nil
 }
 
 func (fm OnlineManager) ReadFile(name string) error {
-	_, err := client.ReadFile(name)
+	datas, err := client.ReadFile(name)
 	if err != nil {
 		fmt.Println("Erreur lors de la lecture du fichier :", err)
+	} else {
+		fmt.Println("Nouveau contenu du fichier :", datas)
 	}
 
 	return nil
 }
 
 func (fm OnlineManager) RenameFile(oldName, newName string) error {
-	err := client.UpdateNameFile(oldName, newName)
+	filePath, err := client.UpdateNameFile(oldName, newName)
 	if err != nil {
 		fmt.Println("Erreur lors du renommage du fichier :", err)
+	} else {
+		fmt.Println("Nouveau path du fichier :", filePath)
 	}
 
 	return nil
 }
 
 func (fm OnlineManager) UpdateText(name, text string) error {
-	err := client.UpdateTextFile(name, text)
+	datas, err := client.UpdateTextFile(name, text)
 	if err != nil {
 		fmt.Println("Erreur lors de l'écriture du fichier :", err)
+	} else {
+		fmt.Println("Contenu du fichier :", datas)
 	}
 
 	return nil
 }
 
 func (fm OnlineManager) DeleteFile(name string) error {
-	err := client.DeleteFile(name)
+	filePath, err := client.DeleteFile(name)
 	if err != nil {
 		fmt.Println("Erreur lors de la suppression du fichier :", err)
+	} else {
+		fmt.Println("Ancien path du fichier :", filePath)
 	}
 
 	return nil
 }
 
-func (fm OnlineManager) Historic() error {
+func (fm OnlineManager) History() error {
 	data, err := client.Hist()
 	if err != nil {
 		fmt.Println("Erreur lors de l'affichage de l'historique :", err)

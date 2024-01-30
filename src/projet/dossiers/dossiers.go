@@ -164,25 +164,25 @@ func RenameFolder(oldName, newName, path string) (string, error) {
 	return newPath, nil
 }
 
-func DeleteFolder(name, path string) error {
+func DeleteFolder(name, path string) (string, error) {
 	path = path + name
 	command := "delete"
 
 	// Vérifie si le dossier existe
 	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
 		logCommand(command, name+" "+path, "Le dossier n'existe pas.")
-		return errors.New("le dossier n'existe pas")
+		return "", errors.New("le dossier n'existe pas")
 	}
 
 	// Supprimer le dossier
 	err := os.RemoveAll(path)
 	if err != nil {
 		logCommand(command, name+" "+path, "La tentative de suppression du dossier et de son contenu a échoué.")
-		return errors.New("la tentative de suppression du dossier et de son contenu a échoué")
+		return "", errors.New("la tentative de suppression du dossier et de son contenu a échoué")
 	}
 
 	logCommand(command, name+" "+path, "Le dossier, ainsi que toutes les données qu'il contenait, ont été intégralement supprimés.")
 	fmt.Println("Le dossier, ainsi que toutes les données qu'il contenait, ont été intégralement supprimés.")
 
-	return nil
+	return path, nil
 }
