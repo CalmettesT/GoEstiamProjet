@@ -32,9 +32,11 @@ type OfflineManager struct{}
 
 func (fm OfflineManager) CreateFolder(name string) error {
 	// Créer un dossier
-	_, err := dossiers.CreateFolder(name, path)
+	folderPath, err := dossiers.CreateFolder(name, path)
 	if err != nil {
 		fmt.Println("Erreur lors de la création du dossier :", err)
+	} else {
+		fmt.Println("Voici le path du nouveau dossier :", folderPath)
 	}
 
 	return nil
@@ -42,9 +44,11 @@ func (fm OfflineManager) CreateFolder(name string) error {
 
 func (fm OfflineManager) ReadFolder(name string) error {
 	// Lire le dossier
-	_, err := dossiers.ReadFolder(name, path)
+	datas, err := dossiers.ReadFolder(name, path)
 	if err != nil {
 		fmt.Println("Erreur lors de la lecture du dossier :", err)
+	} else {
+		fmt.Println("Contenu du dossier :", datas)
 	}
 
 	return nil
@@ -52,9 +56,11 @@ func (fm OfflineManager) ReadFolder(name string) error {
 
 func (fm OfflineManager) RenameFolder(oldName, newName string) error {
 	// Renommer un dossier
-	_, err := dossiers.RenameFolder(oldName, newName, path)
+	folderPath, err := dossiers.RenameFolder(oldName, newName, path)
 	if err != nil {
 		fmt.Println("Erreur lors du renommage du dossier :", err)
+	} else {
+		fmt.Println("Voici le nouveau path du dossier :", folderPath)
 	}
 
 	return nil
@@ -62,9 +68,11 @@ func (fm OfflineManager) RenameFolder(oldName, newName string) error {
 
 func (fm OfflineManager) DeleteFolder(name string) error {
 	// Delete un dossier
-	_, err := dossiers.DeleteFolder(name, path)
+	folderPath, err := dossiers.DeleteFolder(name, path)
 	if err != nil {
 		fmt.Println("Erreur lors de la suppression du dossier :", err)
+	} else {
+		fmt.Println("Ancien path du dossier :", folderPath)
 	}
 
 	return nil
