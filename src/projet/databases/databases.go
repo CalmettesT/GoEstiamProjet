@@ -69,17 +69,15 @@ func LastJournal() ([]LogData, error) {
 	for rows.Next() {
 		var (
 			log     LogData
-			dhBytes []byte // variable to hold the byte slice
+			dhBytes []byte
 		)
 
-		// Scan the date/time as []byte
 		if err := rows.Scan(&log.ID, &dhBytes, &log.MF, &log.Argument, &log.Statut); err != nil {
 			return nil, fmt.Errorf("LastJournal %v", err)
 		}
 
-		// Convert []byte to string, then parse string into time.Time
 		dhString := string(dhBytes)
-		layout := "2006-01-02 15:04:05" // adjust the layout to match your datetime format
+		layout := "2006-01-02 15:04:05"
 		log.DH, err = time.Parse(layout, dhString)
 		if err != nil {
 			return nil, fmt.Errorf("LastJournal%v", err)

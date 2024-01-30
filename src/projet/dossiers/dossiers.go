@@ -144,7 +144,7 @@ func RenameFolder(oldName, newName, path string) (string, error) {
 		return newPath, errors.New("le chemin ne renvoi pas vers un dossier")
 	}
 
-	// Vérifie si le dossier existe
+	// Vérifie si le nouveau dossier existe
 	_, err = os.Stat(newPath)
 	if err == nil {
 		logCommand(command, oldName+" "+newName+" "+path, "Un dossier avec le nouveau nom existe déjà.")
