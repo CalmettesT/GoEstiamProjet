@@ -190,9 +190,9 @@ func (fm OnlineManager) CreateFile(name, text string) error {
 	filePath, err := client.CreateFile(name, text)
 	if err != nil {
 		fmt.Println("Erreur lors de la création du fichier :", err)
+	} else {
+		fmt.Println("Voici le path du nouveau fichier :", filePath)
 	}
-
-	fmt.Println("Voici le path du nouveau fichier :", filePath)
 
 	return nil
 }
@@ -331,7 +331,7 @@ func main() {
 					if len(os.Args) > 4 {
 						manager.RenameFile(os.Args[3], os.Args[4])
 					} else {
-						fmt.Println("Nom des fichiers manquant")
+						fmt.Println("Nom des fichiers manquants")
 					}
 
 				case "update":
@@ -347,7 +347,6 @@ func main() {
 					} else {
 						fmt.Println("Nom du fichier manquant")
 					}
-				// Ajoutez des cas pour les autres commandes ici...
 				default:
 					fmt.Println("Commande inconnue")
 				}
