@@ -1,8 +1,6 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
 	"projet/databases"
 	"projet/dossiers"
@@ -260,7 +258,5 @@ func historiqueCommand(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
 
-	fmt.Println(json.Unmarshal(journaux))
-
-	c.JSON(http.StatusOK, gin.H{"history": journaux})
+	c.JSON(http.StatusOK, journaux)
 }

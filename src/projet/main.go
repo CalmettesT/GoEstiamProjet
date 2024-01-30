@@ -242,13 +242,16 @@ func (fm OnlineManager) DeleteFile(name string) error {
 }
 
 func (fm OnlineManager) History() error {
-	data, err := client.Hist()
+	journaux, err := client.Hist()
 	if err != nil {
 		fmt.Println("Erreur lors de l'affichage de l'historique :", err)
 	}
 
-	for _, entry := range data {
-		fmt.Println("-", entry)
+	if len(journaux) > 0 {
+		fmt.Printf("Voici l'historique des 50 dernières commandes :\n\n")
+		for _, entry := range journaux {
+			fmt.Println(entry.ID, " | ", entry.DH, " | ", entry.MF, " | ", entry.Argument, " | ", entry.Statut)
+		}
 	}
 
 	return nil
@@ -393,7 +396,7 @@ func main() {
 			}
 
 		case "hist":
-			manager.Historic()
+			manager.History()
 
 		default:
 			fmt.Println("Commande inconnue")

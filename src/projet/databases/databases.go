@@ -2,7 +2,6 @@ package databases
 
 import (
 	"database/sql"
-	"encoding/json"
 	"fmt"
 	"log"
 	"time"
@@ -57,7 +56,7 @@ func AddLog(log LogData) (int64, error) {
 	return id, nil
 }
 
-func LastJournal() ([]byte, error) {
+func LastJournal() ([]LogData, error) {
 
 	rows, err := db.Query("SELECT * FROM journal ORDER BY id DESC LIMIT 50;")
 	if err != nil {
@@ -89,10 +88,5 @@ func LastJournal() ([]byte, error) {
 		logs = append(logs, log)
 	}
 
-	jsonData, err := json.Marshal(logs)
-	if err != nil {
-		return nil, err
-	}
-
-	return jsonData, nil
+	return logs, nil
 }

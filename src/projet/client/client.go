@@ -11,8 +11,12 @@ import (
 
 const ServerURL = "http://localhost:8080"
 
-type Folder struct {
-	Name string `json:"name"`
+type LogData struct {
+	ID       int64     `json:"id"`
+	DH       time.Time `json:"dh"`
+	MF       string    `json:"mf"`
+	Argument string    `json:"argument"`
+	Statut   string    `json:"statut"`
 }
 
 func CreateFolder(name string) (string, error) {
@@ -330,8 +334,7 @@ func DeleteFile(name string) (string, error) {
 	return respBody.FilePath, nil
 }
 
-func Hist() ([]LogEntry, error) (string, error) {
-
+func Hist() ([]LogData, error) {
 	resp, err := http.Get(ServerURL + "/divers/hist")
 	if err != nil {
 		return nil, err
@@ -339,26 +342,37 @@ func Hist() ([]LogEntry, error) (string, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		body, _ := io.ReadAll(resp.Body)
-		return nil, fmt.Errorf("serveur a retourné une erreur : %s", body)
+		return nil, fmt.Errorf("status code: %d", resp.StatusCode)
 	}
 
-	var respBody struct {
-		FileContent string `json:"content"`
-	}
-	if err := json.NewDecoder(resp.Body).Decode(&respBody); err != nil {
-		return "", err
+	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
 	}
 
-	return log, nil
+	var logs []LogData
+	if err := json.Unmarshal(bodyBytes, &logs); err != nil {
+		return nil, err
+	}
+
+	return logs, nil
+	// resp, err := http.Get(ServerURL + "/divers/hist")
+	// if err != nil {
+	// 	return nil, err
+	// }
+
+	// defer resp.Body.Close()
+
+	// if resp.StatusCode != http.StatusOK {
+	// 	log.Fatalln("Status code:", resp.StatusCode)
+	// }
+	// fmt.Println(resp.body)
+	// var logs []LogData
+	// bodyBytes, _ := io.ReadAll(resp.Body)
+
+	// json.Unmarshal(bodyBytes, &logs)
+
+	// return logs, nil
+
+	// // return log, nil
 }
-
-// LogEntry représente une entrée d'historique
-type LogEntry struct {
-	ID       int64 `json:"id"`
-	DH       time.Time `json:"dh"`
-	MF       string `json:"mf"`
-	Argument string `json:"argument"`
-	Statut   string `json:"statut"`
-}
-
