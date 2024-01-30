@@ -69,6 +69,8 @@ func ReadFolder(name string) ([]string, error) {
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
 		return nil, fmt.Errorf("serveur a retourné une erreur : %s", body)
+	} else {
+		fmt.Println("Le dossier a bien été lu.")
 	}
 
 	// Structure pour décoder la réponse du serveur
@@ -84,7 +86,7 @@ func ReadFolder(name string) ([]string, error) {
 
 func RenameFolder(oldName string, newName string) (string, error) {
 	type FolderRenameRequest struct {
-		NewName string `json:"newName"`
+		NewName string `json:"name"`
 	}
 
 	requestData := FolderRenameRequest{
@@ -144,6 +146,8 @@ func DeleteFolder(name string) (string, error) {
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
 		return "", fmt.Errorf("serveur a retourné une erreur : %s", body)
+	} else {
+		fmt.Println("Le dossier a bien été supprimé.")
 	}
 	var respBody struct {
 		FolderPath string `json:"folderPath"`
@@ -182,7 +186,7 @@ func CreateFile(name string, content string) (string, error) {
 		body, _ := io.ReadAll(resp.Body)
 		return "", fmt.Errorf("serveur a retourné une erreur : %s", body)
 	} else {
-		fmt.Println("Le fichier a bien été créé.")
+		fmt.Println("Le Fichier a bien été créé.")
 	}
 
 	var respBody struct {
@@ -292,6 +296,8 @@ func UpdateNameFile(oldName string, newName string) (string, error) {
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
 		return "", fmt.Errorf("serveur a retourné une erreur : %s", body)
+	} else {
+		fmt.Println("Le Fichier a bien été renomé.")
 	}
 
 	var respBody struct {
@@ -321,6 +327,8 @@ func DeleteFile(name string) (string, error) {
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
 		return "", fmt.Errorf("serveur a retourné une erreur : %s", body)
+	} else {
+		fmt.Println("Le Fichier a bien été supprimé.")
 	}
 
 	var respBody struct {
@@ -356,23 +364,4 @@ func Hist() ([]LogData, error) {
 	}
 
 	return logs, nil
-	// resp, err := http.Get(ServerURL + "/divers/hist")
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// defer resp.Body.Close()
-
-	// if resp.StatusCode != http.StatusOK {
-	// 	log.Fatalln("Status code:", resp.StatusCode)
-	// }
-	// fmt.Println(resp.body)
-	// var logs []LogData
-	// bodyBytes, _ := io.ReadAll(resp.Body)
-
-	// json.Unmarshal(bodyBytes, &logs)
-
-	// return logs, nil
-
-	// // return log, nil
 }

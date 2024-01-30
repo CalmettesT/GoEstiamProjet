@@ -12,7 +12,7 @@ import (
 
 const path = "C:\\GoEstiamProjet\\src\\data\\"
 
-const config = "offline"
+const config = "online"
 
 type Manager interface {
 	CreateFolder(name string) error
@@ -80,9 +80,11 @@ func (fm OfflineManager) DeleteFolder(name string) error {
 
 func (fm OfflineManager) CreateFile(name, text string) error {
 	// Créer un fichier
-	_, err := fichiers.CreateFile(name, text, path)
+	filePath, err := fichiers.CreateFile(name, text, path)
 	if err != nil {
 		fmt.Println("Erreur lors de la création du fichier :", err)
+	} else {
+		fmt.Println("Voici le path du nouveau fichier :", filePath)
 	}
 
 	return nil
@@ -90,20 +92,23 @@ func (fm OfflineManager) CreateFile(name, text string) error {
 
 func (fm OfflineManager) ReadFile(name string) error {
 	// Lire un fichier
-	data, err := fichiers.ReadFile(name, path)
+	content, err := fichiers.ReadFile(name, path)
 	if err != nil {
 		fmt.Println("Erreur lors de la lecture du fichier :", err)
+	} else {
+		fmt.Println("Voici le contenu du fichier :", content)
 	}
-	fmt.Printf("File data: %v\n", data)
 
 	return nil
 }
 
 func (fm OfflineManager) RenameFile(oldName, newName string) error {
 	// Renommer un fichier
-	_, err := fichiers.UpdateNameFile(oldName, newName, path)
+	filePath, err := fichiers.UpdateNameFile(oldName, newName, path)
 	if err != nil {
 		fmt.Println("Erreur lors du renommage du fichier :", err)
+	} else {
+		fmt.Println("Voici le path du nouveau fichier :", filePath)
 	}
 
 	return nil
@@ -111,9 +116,11 @@ func (fm OfflineManager) RenameFile(oldName, newName string) error {
 
 func (fm OfflineManager) UpdateText(name, text string) error {
 	// Ajouter du texte dans un fichier
-	_, err := fichiers.UpdateTextFile(name, text, path)
+	content, err := fichiers.UpdateTextFile(name, text, path)
 	if err != nil {
 		fmt.Println("Erreur lors de l'écriture du fichier :", err)
+	} else {
+		fmt.Println("Voici le contenu du fichier :", content)
 	}
 
 	return nil
@@ -121,9 +128,11 @@ func (fm OfflineManager) UpdateText(name, text string) error {
 
 func (fm OfflineManager) DeleteFile(name string) error {
 	// Ajouter du texte dans un fichier
-	_, err := fichiers.DeleteFile(name, path)
+	filePath, err := fichiers.DeleteFile(name, path)
 	if err != nil {
 		fmt.Println("Erreur lors de la suppression du fichier :", err)
+	} else {
+		fmt.Println("Voici le path du fichier supprimé :", filePath)
 	}
 
 	return nil

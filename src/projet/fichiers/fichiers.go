@@ -62,6 +62,7 @@ func CreateFile(name string, text string, path string) (string, error) {
 		}
 		logCommand(command, name+" "+filePath+" "+text, "Fichier créé")
 		fmt.Println("Fichier créé")
+		
 		return filePath, nil
 	} else {
 		logCommand(command, name+" "+filePath+" "+text, "le fichier existe deja")
@@ -147,5 +148,6 @@ func DeleteFile(name string, path string) (string, error) {
 	}
 	logCommand(command, name+" "+filePath, "Fichier supprimé.")
 	fmt.Println("Fichier supprimé.")
+
 	return filePath, nil
 }
